@@ -33,6 +33,71 @@ class PanGenomeAPI(object):
             trust_all_ssl_certificates=trust_all_ssl_certificates,
             auth_svc=auth_svc)
 
+    def search_orthologs_from_pangenome(self, params, context=None):
+        """
+        :param params: instance of type "SearchOrthologs" (num_found -
+           optional field which when set informs that there is no need to
+           perform full scan in order to count this value because it was
+           already done before; please don't set this value with 0 or any
+           guessed number if you didn't get right value previously.) ->
+           structure: parameter "ref" of String, parameter "query" of String,
+           parameter "sort_by" of list of type "column_sorting" -> tuple of
+           size 2: parameter "column" of String, parameter "ascending" of
+           type "boolean" (Indicates true or false values, false = 0, true =
+           1 @range [0,1]), parameter "start" of Long, parameter "limit" of
+           Long, parameter "num_found" of Long
+        :returns: instance of type "SearchOrthologsResult" (num_found -
+           number of all items found in query search (with only part of it
+           returned in "bins" list).) -> structure: parameter "query" of
+           String, parameter "start" of Long, parameter "orthologs" of list
+           of type "OrthologsData" (OrthologFamily object: this object holds
+           all data for a single ortholog family in a metagenome @optional
+           type function md5 protein_translation) -> structure: parameter
+           "id" of String, parameter "type" of String, parameter "function"
+           of String, parameter "md5" of String, parameter
+           "protein_translation" of String, parameter "orthologs" of list of
+           tuple of size 3: String, Double, String, parameter "num_found" of
+           Long
+        """
+        return self._client.call_method(
+            'PanGenomeAPI.search_orthologs_from_pangenome',
+            [params], self._service_ver, context)
+
+    def search_genomes_from_pangenome(self, params, context=None):
+        """
+        :param params: instance of type "SearchGenomes" -> structure:
+           parameter "pangenome_ref" of String, parameter "genome_ref" of
+           String, parameter "query" of String, parameter "sort_by" of list
+           of type "column_sorting" -> tuple of size 2: parameter "column" of
+           String, parameter "ascending" of type "boolean" (Indicates true or
+           false values, false = 0, true = 1 @range [0,1]), parameter "start"
+           of Long, parameter "limit" of Long, parameter "num_found" of Long
+        :returns: instance of type "SearchGenomesResult" (num_found - number
+           of all items found in query search (with only part of it returned
+           in "features" list).) -> structure: parameter "query" of String,
+           parameter "start" of Long, parameter "features" of list of type
+           "FeatureData" (aliases - mapping from alias name (key) to set of
+           alias sources (value), global_location - this is location-related
+           properties that are under sorting whereas items in "location"
+           array are not, feature_idx - legacy field keeping the position of
+           feature in feature array in legacy Genome object, ontology_terms -
+           mapping from term ID (key) to term name (value).) -> structure:
+           parameter "feature_id" of String, parameter "aliases" of mapping
+           from String to list of String, parameter "function" of String,
+           parameter "location" of list of type "Location" -> structure:
+           parameter "contig_id" of String, parameter "start" of Long,
+           parameter "strand" of String, parameter "length" of Long,
+           parameter "feature_type" of String, parameter "global_location" of
+           type "Location" -> structure: parameter "contig_id" of String,
+           parameter "start" of Long, parameter "strand" of String, parameter
+           "length" of Long, parameter "feature_idx" of Long, parameter
+           "ontology_terms" of mapping from String to String, parameter
+           "num_found" of Long
+        """
+        return self._client.call_method(
+            'PanGenomeAPI.search_genomes_from_pangenome',
+            [params], self._service_ver, context)
+
     def status(self, context=None):
         return self._client.call_method('PanGenomeAPI.status',
                                         [], self._service_ver, context)
