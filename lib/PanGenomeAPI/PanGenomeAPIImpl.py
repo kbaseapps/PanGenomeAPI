@@ -21,7 +21,7 @@ class PanGenomeAPI:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/Tianhao-Gu/PanGenomeAPI.git"
-    GIT_COMMIT_HASH = "d3ee2631bc17823aa2514c697ee0c06d73e4011d"
+    GIT_COMMIT_HASH = "c851f3040cd931e1a1510d8333cad016253c6bdc"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER

@@ -10,6 +10,7 @@ import tempfile
 from Workspace.WorkspaceClient import Workspace as Workspace
 from PanGenomeAPI.CombinedLineIterator import CombinedLineIterator
 from GenomeSearchUtil.GenomeSearchUtilClient import GenomeSearchUtil
+from DataFileUtil.DataFileUtilClient import DataFileUtil
 
 
 class PanGenomeIndexer:
@@ -36,27 +37,31 @@ class PanGenomeIndexer:
         self.unicode_comma = u"\uFF0C"
         self.callback_url = os.environ['SDK_CALLBACK_URL']
         self.gsu = GenomeSearchUtil(self.callback_url)
+        self.dfu = DataFileUtil(self.callback_url)
 
-    # def search_genomes_from_pangenome(self, token, pangenome_ref, genome_ref, query, sort_by,
-    #                                   start, limit, num_found):
+    def search_genomes_from_pangenome(self, token, pangenome_ref, genome_ref, query, sort_by,
+                                      start, limit, num_found):
 
-    #     included = ["/genome_refs/"]
+        ws = Workspace(self.ws_url, token=token)
+        pangenome_genomes = ws.get_objects2({'objects': [{'ref': pangenome_ref,
+                                             'included': ["/genome_refs/"]}]})['data'][0]['data']
 
-    #     # "/bins/[*]/bid"
-    #     ws = Workspace(self.ws_url, token=token)
-    #     pangenome = ws.get_objects2({'objects': [{'ref': pangenome_ref,
-    #                                               'included': included}]})['data'][0]['data']
+        genome_refs = pangenome_genomes.get('genome_refs')
+        genome_info = self.dfu.get_objects({'object_refs': [genome_ref]})['data'][0].get('info')
 
-    #     print pangenome
+        genome_ref = str(genome_info[6]) + '/' + str(genome_info[0]) + '/' + str(genome_info[4])
 
-    #     # ret = self.gsu.search({'ref': genome_ref,
-    #     #                        'query': query,
-    #     #                        'sort_by': sort_by,
-    #     #                        'start': start,
-    #     #                        'limit': limit,
-    #     #                        'num_found': num_found})
-    #     ret = {'a': 's'}
-    #     return ret
+        if genome_ref in genome_refs:
+            ret = self.gsu.search({'ref': genome_ref,
+                                   'query': query,
+                                   'sort_by': sort_by,
+                                   'start': start,
+                                   'limit': limit,
+                                   'num_found': num_found})
+        else:
+            raise ValueError('genome_ref [{}] does not exist in available genomes [{}]'.format(
+                                                            genome_ref, ', '.join(genome_refs)))
+        return ret
 
     def search_orthologs_from_pangenome(self, token, ref, query, sort_by, start, limit, num_found):
         if query is None:
