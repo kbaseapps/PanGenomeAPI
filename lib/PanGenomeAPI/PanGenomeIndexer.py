@@ -9,6 +9,7 @@ import tempfile
 
 from Workspace.WorkspaceClient import Workspace as Workspace
 from PanGenomeAPI.CombinedLineIterator import CombinedLineIterator
+from GenomeSearchUtil.GenomeSearchUtilClient import GenomeSearchUtil
 
 
 class PanGenomeIndexer:
@@ -33,6 +34,29 @@ class PanGenomeIndexer:
         self.debug = "debug" in config and config["debug"] == "1"
         self.max_sort_mem_size = 250000
         self.unicode_comma = u"\uFF0C"
+        self.callback_url = os.environ['SDK_CALLBACK_URL']
+        self.gsu = GenomeSearchUtil(self.callback_url)
+
+    # def search_genomes_from_pangenome(self, token, pangenome_ref, genome_ref, query, sort_by,
+    #                                   start, limit, num_found):
+
+    #     included = ["/genome_refs/"]
+
+    #     # "/bins/[*]/bid"
+    #     ws = Workspace(self.ws_url, token=token)
+    #     pangenome = ws.get_objects2({'objects': [{'ref': pangenome_ref,
+    #                                               'included': included}]})['data'][0]['data']
+
+    #     print pangenome
+
+    #     # ret = self.gsu.search({'ref': genome_ref,
+    #     #                        'query': query,
+    #     #                        'sort_by': sort_by,
+    #     #                        'start': start,
+    #     #                        'limit': limit,
+    #     #                        'num_found': num_found})
+    #     ret = {'a': 's'}
+    #     return ret
 
     def search_orthologs_from_pangenome(self, token, ref, query, sort_by, start, limit, num_found):
         if query is None:
@@ -195,7 +219,7 @@ class PanGenomeIndexer:
         return ret
 
     def get_sorted_iterator(self, inner_chsum, sort_by, item_type, column_props_map):
-        input_file = os.path.join(self.metagenome_index_dir, inner_chsum + item_type + ".tsv.gz")
+        input_file = os.path.join(self.pangenome_index_dir, inner_chsum + item_type + ".tsv.gz")
         if not os.path.isfile(input_file):
             raise ValueError("File not found: " + input_file)
         if sort_by is None or len(sort_by) == 0:
@@ -212,14 +236,14 @@ class PanGenomeIndexer:
             cmd += " " + sort_arg
         fname = (inner_chsum + "_" + item_type + "_" +
                  self.get_sorting_code(column_props_map, sort_by))
-        final_output_file = os.path.join(self.metagenome_index_dir, fname + ".tsv.gz")
+        final_output_file = os.path.join(self.pangenome_index_dir, fname + ".tsv.gz")
         if not os.path.isfile(final_output_file):
             if self.debug:
                 print("    Sorting...")
                 t1 = time.time()
             need_to_save = os.path.getsize(input_file) > self.max_sort_mem_size
             if need_to_save:
-                outfile = tempfile.NamedTemporaryFile(dir=self.metagenome_index_dir,
+                outfile = tempfile.NamedTemporaryFile(dir=self.pangenome_index_dir,
                                                       prefix=fname + "_", suffix=".tsv.gz",
                                                       delete=False)
                 outfile.close()

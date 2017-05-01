@@ -21,6 +21,7 @@ from PanGenomeAPI.PanGenomeAPIImpl import PanGenomeAPI
 from PanGenomeAPI.PanGenomeAPIServer import MethodContext
 from PanGenomeAPI.authclient import KBaseAuth as _KBaseAuth
 from PangenomeOrthomcl.PangenomeOrthomclClient import PangenomeOrthomcl
+from GenomeComparisonSDK.GenomeComparisonSDKClient import GenomeComparisonSDK
 
 
 class PanGenomeAPITest(unittest.TestCase):
@@ -61,6 +62,7 @@ class PanGenomeAPITest(unittest.TestCase):
         wsName = "test_pangenome_api_" + str(suffix)
         cls.ws_info = cls.wsClient.create_workspace({'workspace': wsName})
         cls.po = PangenomeOrthomcl(cls.callback_url)
+        cls.gcs = GenomeComparisonSDK(cls.callback_url)
         cls.prepare_data()
 
     @classmethod
@@ -80,10 +82,9 @@ class PanGenomeAPITest(unittest.TestCase):
                                    'objects': [{'type': 'KBaseGenomes.ContigSet',
                                                 'name': contig_obj_name, 'data': obj}]})
         genome_fasta_files = ["Escherichia_coli_042_uid161985.faa",
-                              "Escherichia_coli_BW2952_uid59391.faa",
-                              "Escherichia_coli_K12_MG1655_uid57779.faa"]
+                              "Escherichia_coli_BW2952_uid59391.faa"]
         genomeset_obj = {"description": "", "elements": {}}
-        genome_refs = []
+        cls.genome_refs = []
         genome_feature_counts = {}
         for genome_index, genome_file_name in enumerate(genome_fasta_files):
             test_dir = os.path.dirname(os.path.realpath(__file__))
@@ -113,27 +114,20 @@ class PanGenomeAPITest(unittest.TestCase):
             genome_feature_counts[full_ref] = len(features)
             genomeset_obj["elements"]["param" + str(genome_index)] = {
                                                     "ref": cls.ws_info[1] + "/" + genome_obj_name}
-            genome_refs.append(cls.ws_info[1] + "/" + genome_obj_name)
+            cls.genome_refs.append(cls.ws_info[1] + "/" + genome_obj_name)
         genomeset_obj_name = "genomeset.1"
         cls.wsClient.save_objects({'workspace': cls.ws_info[1],
                                    'objects': [{'type': 'KBaseSearch.GenomeSet',
                                                 'name': genomeset_obj_name,
                                                 'data': genomeset_obj}]})
-        print("Genome list mode\n")
         output_name = "pangenome.1"
-        ret = cls.po.build_pangenome_with_orthomcl({
-                "input_genomeset_ref": None,
-                "output_workspace": cls.ws_info[1], "output_pangenome_id": output_name,
-                "num_descriptions": 100000, "num_alignments": 100000, "evalue": "1e-5",
-                "word_size": 3, "gapopen": 11, "gapextend": 1, "matrix": "BLOSUM62",
-                "threshold": 11, "comp_based_stats": "2", "xdrop_gap_final": 25,
-                "window_size": 40, "seg": "", "lcase_masking": 0, "use_sw_tback": 0,
-                "mcl_p": 10000, "mcl_s": 1100, "mcl_r": 1400, "mcl_pct": 90,
-                "mcl_warn_p": 10, "mcl_warn_factor": 1000, "mcl_init_l": 0,
-                "mcl_main_l": 10000, "mcl_init_i": 2.0, "mcl_main_i": 1.5,
-                "input_genome_refs": genome_refs})[0]
+        ret = cls.gcs.build_pangenome({
+            'genomeset_ref': cls.ws_info[1] + "/" + genomeset_obj_name,
+            'genome_refs': cls.genome_refs,
+            'workspace': cls.ws_info[1],
+            'output_id': output_name
+            })
 
-        print ret
         cls.pangenome_ref = ret.get('pg_ref')
 
     def getWsClient(self):
@@ -155,9 +149,67 @@ class PanGenomeAPITest(unittest.TestCase):
         return self.__class__.ctx
 
     def test_search_orthologs_from_pangenome(self):
-
         # no query
         search_params = {'ref': self.pangenome_ref}
-        ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(),
-                                                             search_params)[0]
+        ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
         pprint(ret)
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['orthologs']), 2)
+        self.assertIn('id', ret['orthologs'][0])
+        self.assertIn('type', ret['orthologs'][0])
+        self.assertIn('function', ret['orthologs'][0])
+        self.assertIn('md5', ret['orthologs'][0])
+        self.assertIn('protein_translation', ret['orthologs'][0])
+        self.assertIn('orthologs', ret['orthologs'][0])
+
+        # with query
+        search_params = {'ref': self.pangenome_ref, 'query': '238899407'}
+        ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
+        self.assertEquals(ret['num_found'], 1)
+        self.assertEquals(ret['query'], '238899407')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['orthologs']), 1)
+        self.assertEquals(ret['orthologs'][0]['id'], 'gi|238899407|ref|YP_002925203.1|')
+        self.assertIn('type', ret['orthologs'][0])
+        self.assertIn('function', ret['orthologs'][0])
+        self.assertIn('md5', ret['orthologs'][0])
+        self.assertIn('protein_translation', ret['orthologs'][0])
+        self.assertIn('orthologs', ret['orthologs'][0])
+
+        # with limit
+        search_params = {'ref': self.pangenome_ref, 'limit': 1}
+        ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['orthologs']), 1)
+        self.assertIsNotNone(ret['orthologs'][0]['id'])
+        self.assertIn('id', ret['orthologs'][0])
+        self.assertIn('type', ret['orthologs'][0])
+        self.assertIn('function', ret['orthologs'][0])
+        self.assertIn('md5', ret['orthologs'][0])
+        self.assertIn('protein_translation', ret['orthologs'][0])
+        self.assertIn('orthologs', ret['orthologs'][0])
+
+        # with start limit
+        search_params = {'ref': self.pangenome_ref, 'start': 1, 'limit': 1}
+        ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 1)
+        self.assertEquals(len(ret['orthologs']), 1)
+        self.assertIsNotNone(ret['orthologs'][0]['id'])
+        self.assertIn('type', ret['orthologs'][0])
+        self.assertIn('function', ret['orthologs'][0])
+        self.assertIn('md5', ret['orthologs'][0])
+        self.assertIn('protein_translation', ret['orthologs'][0])
+        self.assertIn('orthologs', ret['orthologs'][0])
+
+    # def test_search_genomes_from_pangenome(self):
+    #     # no query
+    #     genome_ref = self.genome_refs[0]
+    #     print self.genome_refs
+    #     search_params = {'pangenome_ref': self.pangenome_ref, 'genome_ref': genome_ref}
+    #     ret = self.getImpl().search_genomes_from_pangenome(self.getContext(), search_params)[0]

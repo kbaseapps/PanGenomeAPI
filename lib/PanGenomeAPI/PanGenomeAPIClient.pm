@@ -242,6 +242,150 @@ OrthologsData is a reference to a hash where the following keys are defined:
     }
 }
  
+
+
+=head2 search_genomes_from_pangenome
+
+  $result = $obj->search_genomes_from_pangenome($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a PanGenomeAPI.SearchGenomes
+$result is a PanGenomeAPI.SearchGenomesResult
+SearchGenomes is a reference to a hash where the following keys are defined:
+	pangenome_ref has a value which is a string
+	genome_ref has a value which is a string
+	query has a value which is a string
+	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+	start has a value which is an int
+	limit has a value which is an int
+	num_found has a value which is an int
+column_sorting is a reference to a list containing 2 items:
+	0: (column) a string
+	1: (ascending) a PanGenomeAPI.boolean
+boolean is an int
+SearchGenomesResult is a reference to a hash where the following keys are defined:
+	query has a value which is a string
+	start has a value which is an int
+	features has a value which is a reference to a list where each element is a PanGenomeAPI.FeatureData
+	num_found has a value which is an int
+FeatureData is a reference to a hash where the following keys are defined:
+	feature_id has a value which is a string
+	aliases has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a string
+	function has a value which is a string
+	location has a value which is a reference to a list where each element is a PanGenomeAPI.Location
+	feature_type has a value which is a string
+	global_location has a value which is a PanGenomeAPI.Location
+	feature_idx has a value which is an int
+	ontology_terms has a value which is a reference to a hash where the key is a string and the value is a string
+Location is a reference to a hash where the following keys are defined:
+	contig_id has a value which is a string
+	start has a value which is an int
+	strand has a value which is a string
+	length has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a PanGenomeAPI.SearchGenomes
+$result is a PanGenomeAPI.SearchGenomesResult
+SearchGenomes is a reference to a hash where the following keys are defined:
+	pangenome_ref has a value which is a string
+	genome_ref has a value which is a string
+	query has a value which is a string
+	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+	start has a value which is an int
+	limit has a value which is an int
+	num_found has a value which is an int
+column_sorting is a reference to a list containing 2 items:
+	0: (column) a string
+	1: (ascending) a PanGenomeAPI.boolean
+boolean is an int
+SearchGenomesResult is a reference to a hash where the following keys are defined:
+	query has a value which is a string
+	start has a value which is an int
+	features has a value which is a reference to a list where each element is a PanGenomeAPI.FeatureData
+	num_found has a value which is an int
+FeatureData is a reference to a hash where the following keys are defined:
+	feature_id has a value which is a string
+	aliases has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a string
+	function has a value which is a string
+	location has a value which is a reference to a list where each element is a PanGenomeAPI.Location
+	feature_type has a value which is a string
+	global_location has a value which is a PanGenomeAPI.Location
+	feature_idx has a value which is an int
+	ontology_terms has a value which is a reference to a hash where the key is a string and the value is a string
+Location is a reference to a hash where the following keys are defined:
+	contig_id has a value which is a string
+	start has a value which is an int
+	strand has a value which is a string
+	length has a value which is an int
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub search_genomes_from_pangenome
+{
+    my($self, @args) = @_;
+
+# Authentication: optional
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function search_genomes_from_pangenome (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to search_genomes_from_pangenome:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'search_genomes_from_pangenome');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "PanGenomeAPI.search_genomes_from_pangenome",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'search_genomes_from_pangenome',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method search_genomes_from_pangenome",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'search_genomes_from_pangenome',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -285,16 +429,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'search_orthologs_from_pangenome',
+                method_name => 'search_genomes_from_pangenome',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method search_orthologs_from_pangenome",
+            error => "Error invoking method search_genomes_from_pangenome",
             status_line => $self->{client}->status_line,
-            method_name => 'search_orthologs_from_pangenome',
+            method_name => 'search_genomes_from_pangenome',
         );
     }
 }
@@ -532,6 +676,181 @@ a reference to a hash where the following keys are defined:
 query has a value which is a string
 start has a value which is an int
 orthologs has a value which is a reference to a list where each element is a PanGenomeAPI.OrthologsData
+num_found has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchGenomes
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+pangenome_ref has a value which is a string
+genome_ref has a value which is a string
+query has a value which is a string
+sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+start has a value which is an int
+limit has a value which is an int
+num_found has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+pangenome_ref has a value which is a string
+genome_ref has a value which is a string
+query has a value which is a string
+sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+start has a value which is an int
+limit has a value which is an int
+num_found has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 Location
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+contig_id has a value which is a string
+start has a value which is an int
+strand has a value which is a string
+length has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+contig_id has a value which is a string
+start has a value which is an int
+strand has a value which is a string
+length has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 FeatureData
+
+=over 4
+
+
+
+=item Description
+
+aliases - mapping from alias name (key) to set of alias sources 
+    (value),
+global_location - this is location-related properties that are
+    under sorting whereas items in "location" array are not,
+feature_idx - legacy field keeping the position of feature in
+    feature array in legacy Genome object,
+ontology_terms - mapping from term ID (key) to term name (value).
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+feature_id has a value which is a string
+aliases has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a string
+function has a value which is a string
+location has a value which is a reference to a list where each element is a PanGenomeAPI.Location
+feature_type has a value which is a string
+global_location has a value which is a PanGenomeAPI.Location
+feature_idx has a value which is an int
+ontology_terms has a value which is a reference to a hash where the key is a string and the value is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+feature_id has a value which is a string
+aliases has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a string
+function has a value which is a string
+location has a value which is a reference to a list where each element is a PanGenomeAPI.Location
+feature_type has a value which is a string
+global_location has a value which is a PanGenomeAPI.Location
+feature_idx has a value which is an int
+ontology_terms has a value which is a reference to a hash where the key is a string and the value is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchGenomesResult
+
+=over 4
+
+
+
+=item Description
+
+num_found - number of all items found in query search (with 
+    only part of it returned in "features" list).
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+query has a value which is a string
+start has a value which is an int
+features has a value which is a reference to a list where each element is a PanGenomeAPI.FeatureData
+num_found has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+query has a value which is a string
+start has a value which is an int
+features has a value which is a reference to a list where each element is a PanGenomeAPI.FeatureData
 num_found has a value which is an int
 
 

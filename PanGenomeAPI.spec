@@ -54,4 +54,55 @@ module PanGenomeAPI {
 
     funcdef search_orthologs_from_pangenome(SearchOrthologs params) 
         returns (SearchOrthologsResult result) authentication optional;
+
+    typedef structure {
+        string pangenome_ref;
+        string genome_ref;
+        string query;
+        list<column_sorting> sort_by;
+        int start;
+        int limit;
+        int num_found;
+    } SearchGenomes;
+
+    typedef structure {
+        string contig_id;
+        int start;
+        string strand;
+        int length;
+    } Location;
+
+    /*
+        aliases - mapping from alias name (key) to set of alias sources 
+            (value),
+        global_location - this is location-related properties that are
+            under sorting whereas items in "location" array are not,
+        feature_idx - legacy field keeping the position of feature in
+            feature array in legacy Genome object,
+        ontology_terms - mapping from term ID (key) to term name (value).
+    */
+    typedef structure {
+        string feature_id;
+        mapping<string, list<string>> aliases;
+        string function;
+        list<Location> location;
+        string feature_type;
+        Location global_location;
+        int feature_idx;
+        mapping<string, string> ontology_terms;
+    } FeatureData;
+
+    /*
+        num_found - number of all items found in query search (with 
+            only part of it returned in "features" list).
+    */
+    typedef structure {
+        string query;
+        int start;
+        list<FeatureData> features;
+        int num_found;
+    } SearchGenomesResult;
+
+    funcdef search_genomes_from_pangenome(SearchGenomes params) 
+        returns (SearchGenomesResult result) authentication optional;
 };
