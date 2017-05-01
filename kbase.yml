@@ -2,7 +2,7 @@ module-name:
     PanGenomeAPI
 
 module-description:
-    A KBase module
+    A KBase service for caching PanGenome data.
 
 service-language:
     python
@@ -13,3 +13,5 @@ module-version:
 owners:
     [tgu2]
 
+service-config:
+    dynamic-service: true
