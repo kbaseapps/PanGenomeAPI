@@ -20,7 +20,6 @@ from biokbase.workspace.client import Workspace as workspaceService
 from PanGenomeAPI.PanGenomeAPIImpl import PanGenomeAPI
 from PanGenomeAPI.PanGenomeAPIServer import MethodContext
 from PanGenomeAPI.authclient import KBaseAuth as _KBaseAuth
-from PangenomeOrthomcl.PangenomeOrthomclClient import PangenomeOrthomcl
 from GenomeComparisonSDK.GenomeComparisonSDKClient import GenomeComparisonSDK
 
 
@@ -61,7 +60,6 @@ class PanGenomeAPITest(unittest.TestCase):
         suffix = int(time.time() * 1000)
         wsName = "test_pangenome_api_" + str(suffix)
         cls.ws_info = cls.wsClient.create_workspace({'workspace': wsName})
-        cls.po = PangenomeOrthomcl(cls.callback_url)
         cls.gcs = GenomeComparisonSDK(cls.callback_url)
         cls.prepare_data()
 
