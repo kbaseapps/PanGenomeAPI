@@ -166,16 +166,16 @@ public class PanGenomeAPIClient {
      * <p>Original spec-file function name: search_orthologs_from_pangenome</p>
      * <pre>
      * </pre>
-     * @param   params   instance of type {@link us.kbase.pangenomeapi.SearchOrthologs SearchOrthologs}
-     * @return   parameter "result" of type {@link us.kbase.pangenomeapi.SearchOrthologsResult SearchOrthologsResult}
+     * @param   params   instance of type {@link us.kbase.pangenomeapi.SearchOrthologsFromPG SearchOrthologsFromPG}
+     * @return   parameter "result" of type {@link us.kbase.pangenomeapi.SearchOrthologsFromPGResult SearchOrthologsFromPGResult}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public SearchOrthologsResult searchOrthologsFromPangenome(SearchOrthologs params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public SearchOrthologsFromPGResult searchOrthologsFromPangenome(SearchOrthologsFromPG params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(params);
-        TypeReference<List<SearchOrthologsResult>> retType = new TypeReference<List<SearchOrthologsResult>>() {};
-        List<SearchOrthologsResult> res = caller.jsonrpcCall("PanGenomeAPI.search_orthologs_from_pangenome", args, retType, true, false, jsonRpcContext, this.serviceVersion);
+        TypeReference<List<SearchOrthologsFromPGResult>> retType = new TypeReference<List<SearchOrthologsFromPGResult>>() {};
+        List<SearchOrthologsFromPGResult> res = caller.jsonrpcCall("PanGenomeAPI.search_orthologs_from_pangenome", args, retType, true, false, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 
@@ -183,16 +183,67 @@ public class PanGenomeAPIClient {
      * <p>Original spec-file function name: search_genomes_from_pangenome</p>
      * <pre>
      * </pre>
-     * @param   params   instance of type {@link us.kbase.pangenomeapi.SearchGenomes SearchGenomes}
-     * @return   parameter "result" of type {@link us.kbase.pangenomeapi.SearchGenomesResult SearchGenomesResult}
+     * @param   params   instance of type {@link us.kbase.pangenomeapi.SearchGenomesFromPG SearchGenomesFromPG}
+     * @return   parameter "result" of type {@link us.kbase.pangenomeapi.SearchGenomesFromPGResult SearchGenomesFromPGResult}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public SearchGenomesResult searchGenomesFromPangenome(SearchGenomes params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public SearchGenomesFromPGResult searchGenomesFromPangenome(SearchGenomesFromPG params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(params);
-        TypeReference<List<SearchGenomesResult>> retType = new TypeReference<List<SearchGenomesResult>>() {};
-        List<SearchGenomesResult> res = caller.jsonrpcCall("PanGenomeAPI.search_genomes_from_pangenome", args, retType, true, false, jsonRpcContext, this.serviceVersion);
+        TypeReference<List<SearchGenomesFromPGResult>> retType = new TypeReference<List<SearchGenomesFromPGResult>>() {};
+        List<SearchGenomesFromPGResult> res = caller.jsonrpcCall("PanGenomeAPI.search_genomes_from_pangenome", args, retType, true, false, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: search_families_from_comparison_genome</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.pangenomeapi.SearchFamiliesFromCG SearchFamiliesFromCG}
+     * @return   parameter "result" of type {@link us.kbase.pangenomeapi.SearchFamiliesFromCGResult SearchFamiliesFromCGResult}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public SearchFamiliesFromCGResult searchFamiliesFromComparisonGenome(SearchFamiliesFromCG params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<SearchFamiliesFromCGResult>> retType = new TypeReference<List<SearchFamiliesFromCGResult>>() {};
+        List<SearchFamiliesFromCGResult> res = caller.jsonrpcCall("PanGenomeAPI.search_families_from_comparison_genome", args, retType, true, false, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: search_functions_from_comparison_genome</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.pangenomeapi.SearchFunctionsFromCG SearchFunctionsFromCG}
+     * @return   parameter "result" of type {@link us.kbase.pangenomeapi.SearchFunctionsFromCGResult SearchFunctionsFromCGResult}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public SearchFunctionsFromCGResult searchFunctionsFromComparisonGenome(SearchFunctionsFromCG params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<SearchFunctionsFromCGResult>> retType = new TypeReference<List<SearchFunctionsFromCGResult>>() {};
+        List<SearchFunctionsFromCGResult> res = caller.jsonrpcCall("PanGenomeAPI.search_functions_from_comparison_genome", args, retType, true, false, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: search_comparison_genome_from_comparison_genome</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.pangenomeapi.SearchComparisonGenomesFromCG SearchComparisonGenomesFromCG}
+     * @return   parameter "result" of type {@link us.kbase.pangenomeapi.SearchComparisonGenomesFromCGResult SearchComparisonGenomesFromCGResult}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public SearchComparisonGenomesFromCGResult searchComparisonGenomeFromComparisonGenome(SearchComparisonGenomesFromCG params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<SearchComparisonGenomesFromCGResult>> retType = new TypeReference<List<SearchComparisonGenomesFromCGResult>>() {};
+        List<SearchComparisonGenomesFromCGResult> res = caller.jsonrpcCall("PanGenomeAPI.search_comparison_genome_from_comparison_genome", args, retType, true, false, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

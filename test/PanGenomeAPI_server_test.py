@@ -118,15 +118,25 @@ class PanGenomeAPITest(unittest.TestCase):
                                    'objects': [{'type': 'KBaseSearch.GenomeSet',
                                                 'name': genomeset_obj_name,
                                                 'data': genomeset_obj}]})
-        output_name = "pangenome.1"
-        ret = cls.gcs.build_pangenome({
+        pangenome_output_name = "pangenome.1"
+        pangenome_ret = cls.gcs.build_pangenome({
             'genomeset_ref': cls.ws_info[1] + "/" + genomeset_obj_name,
             'genome_refs': cls.genome_refs,
             'workspace': cls.ws_info[1],
-            'output_id': output_name
+            'output_id': pangenome_output_name
             })
 
-        cls.pangenome_ref = ret.get('pg_ref')
+        cls.pangenome_ref = pangenome_ret.get('pg_ref')
+
+        # build comparison genome object
+        comparison_output_name = "comparison_genome.1"
+        comparison_genome_ret = cls.gcs.compare_genomes({
+            'pangenome_ref': cls.pangenome_ref,
+            'workspace': cls.ws_info[1],
+            'output_id': comparison_output_name
+            })
+
+        cls.comparison_genome_ref = comparison_genome_ret.get('cg_ref')
 
     def getWsClient(self):
         return self.__class__.wsClient
@@ -234,3 +244,24 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('features', ret)
         self.assertEquals(len(ret['features']), 1)
         self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|',)
+
+    def test_search_families_from_comparison_genome(self):
+        # no query
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref}
+        ret = self.getImpl().search_families_from_comparison_genome(self.getContext(),
+                                                                    search_params)[0]
+        pprint(ret)
+
+    def test_search_functions_from_comparison_genome(self):
+        # no query
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref}
+        ret = self.getImpl().search_functions_from_comparison_genome(self.getContext(),
+                                                                     search_params)[0]
+        pprint(ret)
+
+    def test_search_comparison_genome_from_comparison_genome(self):
+        # no query
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref}
+        ret = self.getImpl().search_comparison_genome_from_comparison_genome(self.getContext(),
+                                                                             search_params)[0]
+        pprint(ret)
