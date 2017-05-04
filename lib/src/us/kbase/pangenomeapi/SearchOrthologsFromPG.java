@@ -27,7 +27,7 @@ import us.kbase.common.service.Tuple2;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
-    "ref",
+    "pangenome_ref",
     "query",
     "sort_by",
     "start",
@@ -36,8 +36,8 @@ import us.kbase.common.service.Tuple2;
 })
 public class SearchOrthologsFromPG {
 
-    @JsonProperty("ref")
-    private java.lang.String ref;
+    @JsonProperty("pangenome_ref")
+    private java.lang.String pangenomeRef;
     @JsonProperty("query")
     private java.lang.String query;
     @JsonProperty("sort_by")
@@ -50,18 +50,18 @@ public class SearchOrthologsFromPG {
     private java.lang.Long numFound;
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
-    @JsonProperty("ref")
-    public java.lang.String getRef() {
-        return ref;
+    @JsonProperty("pangenome_ref")
+    public java.lang.String getPangenomeRef() {
+        return pangenomeRef;
     }
 
-    @JsonProperty("ref")
-    public void setRef(java.lang.String ref) {
-        this.ref = ref;
+    @JsonProperty("pangenome_ref")
+    public void setPangenomeRef(java.lang.String pangenomeRef) {
+        this.pangenomeRef = pangenomeRef;
     }
 
-    public SearchOrthologsFromPG withRef(java.lang.String ref) {
-        this.ref = ref;
+    public SearchOrthologsFromPG withPangenomeRef(java.lang.String pangenomeRef) {
+        this.pangenomeRef = pangenomeRef;
         return this;
     }
 
@@ -152,7 +152,7 @@ public class SearchOrthologsFromPG {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((("SearchOrthologsFromPG"+" [ref=")+ ref)+", query=")+ query)+", sortBy=")+ sortBy)+", start=")+ start)+", limit=")+ limit)+", numFound=")+ numFound)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((("SearchOrthologsFromPG"+" [pangenomeRef=")+ pangenomeRef)+", query=")+ query)+", sortBy=")+ sortBy)+", start=")+ start)+", limit=")+ limit)+", numFound=")+ numFound)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

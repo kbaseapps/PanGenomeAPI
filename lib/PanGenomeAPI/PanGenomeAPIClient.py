@@ -40,12 +40,12 @@ class PanGenomeAPI(object):
            perform full scan in order to count this value because it was
            already done before; please don't set this value with 0 or any
            guessed number if you didn't get right value previously.) ->
-           structure: parameter "ref" of String, parameter "query" of String,
-           parameter "sort_by" of list of type "column_sorting" -> tuple of
-           size 2: parameter "column" of String, parameter "ascending" of
-           type "boolean" (Indicates true or false values, false = 0, true =
-           1 @range [0,1]), parameter "start" of Long, parameter "limit" of
-           Long, parameter "num_found" of Long
+           structure: parameter "pangenome_ref" of String, parameter "query"
+           of String, parameter "sort_by" of list of type "column_sorting" ->
+           tuple of size 2: parameter "column" of String, parameter
+           "ascending" of type "boolean" (Indicates true or false values,
+           false = 0, true = 1 @range [0,1]), parameter "start" of Long,
+           parameter "limit" of Long, parameter "num_found" of Long
         :returns: instance of type "SearchOrthologsFromPGResult" (num_found -
            number of all items found in query search (with only part of it
            returned in "orthologs" list).) -> structure: parameter "query" of

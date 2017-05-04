@@ -158,7 +158,7 @@ class PanGenomeAPITest(unittest.TestCase):
 
     def test_search_orthologs_from_pangenome(self):
         # no query
-        search_params = {'ref': self.pangenome_ref}
+        search_params = {'pangenome_ref': self.pangenome_ref}
         ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
         pprint(ret)
         self.assertEquals(ret['num_found'], 2)
@@ -173,7 +173,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('orthologs', ret['orthologs'][0])
 
         # with query
-        search_params = {'ref': self.pangenome_ref, 'query': '238899407'}
+        search_params = {'pangenome_ref': self.pangenome_ref, 'query': '238899407'}
         ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
         self.assertEquals(ret['num_found'], 1)
         self.assertEquals(ret['query'], '238899407')
@@ -187,7 +187,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('orthologs', ret['orthologs'][0])
 
         # with limit
-        search_params = {'ref': self.pangenome_ref, 'limit': 1}
+        search_params = {'pangenome_ref': self.pangenome_ref, 'limit': 1}
         ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
         self.assertEquals(ret['num_found'], 2)
         self.assertEquals(ret['query'], '')
@@ -202,7 +202,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('orthologs', ret['orthologs'][0])
 
         # with start limit
-        search_params = {'ref': self.pangenome_ref, 'start': 1, 'limit': 1}
+        search_params = {'pangenome_ref': self.pangenome_ref, 'start': 1, 'limit': 1}
         ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
         self.assertEquals(ret['num_found'], 2)
         self.assertEquals(ret['query'], '')
@@ -231,7 +231,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertEquals(ret['start'], 0)
         self.assertIn('features', ret)
         self.assertEquals(len(ret['features']), 1)
-        self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|',)
+        self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|')
 
         # with query
         genome_ref = self.genome_refs[0]
@@ -243,7 +243,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertEquals(ret['start'], 0)
         self.assertIn('features', ret)
         self.assertEquals(len(ret['features']), 1)
-        self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|',)
+        self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|')
 
     def test_search_families_from_comparison_genome(self):
         # no query
@@ -251,6 +251,77 @@ class PanGenomeAPITest(unittest.TestCase):
         ret = self.getImpl().search_families_from_comparison_genome(self.getContext(),
                                                                     search_params)[0]
         pprint(ret)
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['families']), 2)
+        self.assertIn('core', ret['families'][0])
+        self.assertIn('genome_features', ret['families'][0])
+        self.assertIn('id', ret['families'][0])
+        self.assertIn('type', ret['families'][0])
+        self.assertIn('protein_translation', ret['families'][0])
+        self.assertIn('number_genomes', ret['families'][0])
+        self.assertIn('fraction_genomes', ret['families'][0])
+        self.assertIn('fraction_consistent_annotations', ret['families'][0])
+        self.assertIn('most_consistent_role', ret['families'][0])
+
+        # with query
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'query': '238899407'}
+        ret = self.getImpl().search_families_from_comparison_genome(self.getContext(),
+                                                                    search_params)[0]
+        self.assertEquals(ret['num_found'], 1)
+        self.assertEquals(ret['query'], '238899407')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['families']), 1)
+        self.assertEquals(ret['families'][0]['id'], 'gi|238899407|ref|YP_002925203.1|')
+        self.assertIn('core', ret['families'][0])
+        self.assertIn('genome_features', ret['families'][0])
+        self.assertIn('id', ret['families'][0])
+        self.assertIn('type', ret['families'][0])
+        self.assertIn('protein_translation', ret['families'][0])
+        self.assertIn('number_genomes', ret['families'][0])
+        self.assertIn('fraction_genomes', ret['families'][0])
+        self.assertIn('fraction_consistent_annotations', ret['families'][0])
+        self.assertIn('most_consistent_role', ret['families'][0])
+
+        # with limit
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'limit': 1}
+        ret = self.getImpl().search_families_from_comparison_genome(self.getContext(),
+                                                                    search_params)[0]
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['families']), 1)
+        self.assertIsNotNone(ret['families'][0]['id'])
+        self.assertIn('core', ret['families'][0])
+        self.assertIn('genome_features', ret['families'][0])
+        self.assertIn('id', ret['families'][0])
+        self.assertIn('type', ret['families'][0])
+        self.assertIn('protein_translation', ret['families'][0])
+        self.assertIn('number_genomes', ret['families'][0])
+        self.assertIn('fraction_genomes', ret['families'][0])
+        self.assertIn('fraction_consistent_annotations', ret['families'][0])
+        self.assertIn('most_consistent_role', ret['families'][0])
+
+        # with start limit
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'start': 1,
+                         'limit': 1}
+        ret = self.getImpl().search_families_from_comparison_genome(self.getContext(),
+                                                                    search_params)[0]
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 1)
+        self.assertEquals(len(ret['families']), 1)
+        self.assertIsNotNone(ret['families'][0]['id'])
+        self.assertIn('core', ret['families'][0])
+        self.assertIn('genome_features', ret['families'][0])
+        self.assertIn('id', ret['families'][0])
+        self.assertIn('type', ret['families'][0])
+        self.assertIn('protein_translation', ret['families'][0])
+        self.assertIn('number_genomes', ret['families'][0])
+        self.assertIn('fraction_genomes', ret['families'][0])
+        self.assertIn('fraction_consistent_annotations', ret['families'][0])
+        self.assertIn('most_consistent_role', ret['families'][0])
 
     def test_search_functions_from_comparison_genome(self):
         # no query
@@ -258,6 +329,86 @@ class PanGenomeAPITest(unittest.TestCase):
         ret = self.getImpl().search_functions_from_comparison_genome(self.getContext(),
                                                                      search_params)[0]
         pprint(ret)
+        self.assertEquals(ret['num_found'], 3)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['functions']), 3)
+        self.assertIn('core', ret['functions'][0])
+        self.assertIn('genome_features', ret['functions'][0])
+        self.assertIn('id', ret['functions'][0])
+        self.assertIn('reactions', ret['functions'][0])
+        self.assertIn('subsystem', ret['functions'][0])
+        self.assertIn('primclass', ret['functions'][0])
+        self.assertIn('subclass', ret['functions'][0])
+        self.assertIn('number_genomes', ret['functions'][0])
+        self.assertIn('fraction_genomes', ret['functions'][0])
+        self.assertIn('fraction_consistent_families', ret['functions'][0])
+        self.assertIn('most_consistent_family', ret['functions'][0])
+
+        # with query
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'query': '387605483'}
+        ret = self.getImpl().search_functions_from_comparison_genome(self.getContext(),
+                                                                     search_params)[0]
+        self.assertEquals(ret['num_found'], 1)
+        self.assertEquals(ret['query'], '387605483')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['functions']), 1)
+        self.assertEquals(ret['functions'][0]['id'],
+                          'gi|387605483|ref|YP_006094339.1| putative exported protein ' +
+                          '[Escherichia coli 042]')
+        self.assertIn('core', ret['functions'][0])
+        self.assertIn('genome_features', ret['functions'][0])
+        self.assertIn('id', ret['functions'][0])
+        self.assertIn('reactions', ret['functions'][0])
+        self.assertIn('subsystem', ret['functions'][0])
+        self.assertIn('primclass', ret['functions'][0])
+        self.assertIn('subclass', ret['functions'][0])
+        self.assertIn('number_genomes', ret['functions'][0])
+        self.assertIn('fraction_genomes', ret['functions'][0])
+        self.assertIn('fraction_consistent_families', ret['functions'][0])
+        self.assertIn('most_consistent_family', ret['functions'][0])
+
+        # with limit
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'limit': 1}
+        ret = self.getImpl().search_functions_from_comparison_genome(self.getContext(),
+                                                                     search_params)[0]
+        self.assertEquals(ret['num_found'], 3)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['functions']), 1)
+        self.assertIsNotNone(ret['functions'][0]['id'])
+        self.assertIn('core', ret['functions'][0])
+        self.assertIn('genome_features', ret['functions'][0])
+        self.assertIn('id', ret['functions'][0])
+        self.assertIn('reactions', ret['functions'][0])
+        self.assertIn('subsystem', ret['functions'][0])
+        self.assertIn('primclass', ret['functions'][0])
+        self.assertIn('subclass', ret['functions'][0])
+        self.assertIn('number_genomes', ret['functions'][0])
+        self.assertIn('fraction_genomes', ret['functions'][0])
+        self.assertIn('fraction_consistent_families', ret['functions'][0])
+        self.assertIn('most_consistent_family', ret['functions'][0])
+
+        # with start limit
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'start': 1,
+                         'limit': 1}
+        ret = self.getImpl().search_functions_from_comparison_genome(self.getContext(),
+                                                                     search_params)[0]
+        self.assertEquals(ret['num_found'], 3)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 1)
+        self.assertEquals(len(ret['functions']), 1)
+        self.assertIn('core', ret['functions'][0])
+        self.assertIn('genome_features', ret['functions'][0])
+        self.assertIn('id', ret['functions'][0])
+        self.assertIn('reactions', ret['functions'][0])
+        self.assertIn('subsystem', ret['functions'][0])
+        self.assertIn('primclass', ret['functions'][0])
+        self.assertIn('subclass', ret['functions'][0])
+        self.assertIn('number_genomes', ret['functions'][0])
+        self.assertIn('fraction_genomes', ret['functions'][0])
+        self.assertIn('fraction_consistent_families', ret['functions'][0])
+        self.assertIn('most_consistent_family', ret['functions'][0])
 
     def test_search_comparison_genome_from_comparison_genome(self):
         # no query
@@ -265,3 +416,70 @@ class PanGenomeAPITest(unittest.TestCase):
         ret = self.getImpl().search_comparison_genome_from_comparison_genome(self.getContext(),
                                                                              search_params)[0]
         pprint(ret)
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['comparison_genomes']), 2)
+        self.assertIn('id', ret['comparison_genomes'][0])
+        self.assertIn('genome_ref', ret['comparison_genomes'][0])
+        self.assertIn('genome_similarity', ret['comparison_genomes'][0])
+        self.assertIn('name', ret['comparison_genomes'][0])
+        self.assertIn('taxonomy', ret['comparison_genomes'][0])
+        self.assertIn('features', ret['comparison_genomes'][0])
+        self.assertIn('families', ret['comparison_genomes'][0])
+        self.assertIn('functions', ret['comparison_genomes'][0])
+
+        # with query
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref,
+                         'query': 'BW2952_uid59391'}
+        ret = self.getImpl().search_comparison_genome_from_comparison_genome(self.getContext(),
+                                                                             search_params)[0]
+        self.assertEquals(ret['num_found'], 1)
+        self.assertEquals(ret['query'], 'BW2952_uid59391')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['comparison_genomes']), 1)
+        self.assertEquals(ret['comparison_genomes'][0]['name'],
+                          'Escherichia_coli_BW2952_uid59391.faa')
+        self.assertIn('id', ret['comparison_genomes'][0])
+        self.assertIn('genome_ref', ret['comparison_genomes'][0])
+        self.assertIn('genome_similarity', ret['comparison_genomes'][0])
+        self.assertIn('name', ret['comparison_genomes'][0])
+        self.assertIn('taxonomy', ret['comparison_genomes'][0])
+        self.assertIn('features', ret['comparison_genomes'][0])
+        self.assertIn('families', ret['comparison_genomes'][0])
+        self.assertIn('functions', ret['comparison_genomes'][0])
+
+        # with limit
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'limit': 1}
+        ret = self.getImpl().search_comparison_genome_from_comparison_genome(self.getContext(),
+                                                                             search_params)[0]
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['comparison_genomes']), 1)
+        self.assertIn('id', ret['comparison_genomes'][0])
+        self.assertIn('genome_ref', ret['comparison_genomes'][0])
+        self.assertIn('genome_similarity', ret['comparison_genomes'][0])
+        self.assertIn('name', ret['comparison_genomes'][0])
+        self.assertIn('taxonomy', ret['comparison_genomes'][0])
+        self.assertIn('features', ret['comparison_genomes'][0])
+        self.assertIn('families', ret['comparison_genomes'][0])
+        self.assertIn('functions', ret['comparison_genomes'][0])
+
+        # with start limit
+        search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'start': 1,
+                         'limit': 1}
+        ret = self.getImpl().search_comparison_genome_from_comparison_genome(self.getContext(),
+                                                                             search_params)[0]
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 1)
+        self.assertEquals(len(ret['comparison_genomes']), 1)
+        self.assertIn('id', ret['comparison_genomes'][0])
+        self.assertIn('genome_ref', ret['comparison_genomes'][0])
+        self.assertIn('genome_similarity', ret['comparison_genomes'][0])
+        self.assertIn('name', ret['comparison_genomes'][0])
+        self.assertIn('taxonomy', ret['comparison_genomes'][0])
+        self.assertIn('features', ret['comparison_genomes'][0])
+        self.assertIn('families', ret['comparison_genomes'][0])
+        self.assertIn('functions', ret['comparison_genomes'][0])

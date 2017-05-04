@@ -19,7 +19,7 @@ module PanGenomeAPI {
             get right value previously.
     */
     typedef structure {
-        string ref;
+        string pangenome_ref;
         string query;
         list<column_sorting> sort_by;
         int start;
