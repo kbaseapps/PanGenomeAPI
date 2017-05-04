@@ -122,7 +122,7 @@ sub new
 $params is a PanGenomeAPI.SearchOrthologsFromPG
 $result is a PanGenomeAPI.SearchOrthologsFromPGResult
 SearchOrthologsFromPG is a reference to a hash where the following keys are defined:
-	ref has a value which is a string
+	pangenome_ref has a value which is a string
 	query has a value which is a string
 	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
 	start has a value which is an int
@@ -158,7 +158,7 @@ OrthologsData is a reference to a hash where the following keys are defined:
 $params is a PanGenomeAPI.SearchOrthologsFromPG
 $result is a PanGenomeAPI.SearchOrthologsFromPGResult
 SearchOrthologsFromPG is a reference to a hash where the following keys are defined:
-	ref has a value which is a string
+	pangenome_ref has a value which is a string
 	query has a value which is a string
 	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
 	start has a value which is an int
@@ -1000,7 +1000,7 @@ num_found - optional field which when set informs that there
 
 <pre>
 a reference to a hash where the following keys are defined:
-ref has a value which is a string
+pangenome_ref has a value which is a string
 query has a value which is a string
 sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
 start has a value which is an int
@@ -1014,7 +1014,7 @@ num_found has a value which is an int
 =begin text
 
 a reference to a hash where the following keys are defined:
-ref has a value which is a string
+pangenome_ref has a value which is a string
 query has a value which is a string
 sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
 start has a value which is an int
