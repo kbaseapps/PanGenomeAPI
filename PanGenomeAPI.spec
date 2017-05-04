@@ -25,7 +25,7 @@ module PanGenomeAPI {
         int start;
         int limit;
         int num_found;
-    } SearchOrthologs;
+    } SearchOrthologsFromPG;
 
     /*
         OrthologFamily object: this object holds all data for a single ortholog family in a metagenome
@@ -43,17 +43,17 @@ module PanGenomeAPI {
 
     /*
         num_found - number of all items found in query search (with 
-            only part of it returned in "bins" list).
+            only part of it returned in "orthologs" list).
     */
     typedef structure {
         string query;
         int start;
         list<OrthologsData> orthologs;
         int num_found;
-    } SearchOrthologsResult;
+    } SearchOrthologsFromPGResult;
 
-    funcdef search_orthologs_from_pangenome(SearchOrthologs params) 
-        returns (SearchOrthologsResult result) authentication optional;
+    funcdef search_orthologs_from_pangenome(SearchOrthologsFromPG params) 
+        returns (SearchOrthologsFromPGResult result) authentication optional;
 
     typedef structure {
         string pangenome_ref;
@@ -63,7 +63,7 @@ module PanGenomeAPI {
         int start;
         int limit;
         int num_found;
-    } SearchGenomes;
+    } SearchGenomesFromPG;
 
     typedef structure {
         string contig_id;
@@ -101,8 +101,129 @@ module PanGenomeAPI {
         int start;
         list<FeatureData> features;
         int num_found;
-    } SearchGenomesResult;
+    } SearchGenomesFromPGResult;
 
-    funcdef search_genomes_from_pangenome(SearchGenomes params) 
-        returns (SearchGenomesResult result) authentication optional;
+    funcdef search_genomes_from_pangenome(SearchGenomesFromPG params) 
+        returns (SearchGenomesFromPGResult result) authentication optional;
+
+    typedef structure {
+        string comparison_genome_ref;
+        string query;
+        list<column_sorting> sort_by;
+        int start;
+        int limit;
+        int num_found;
+    } SearchFamiliesFromCG;
+
+    typedef string Feature_id;
+
+    /*
+        GenomeComparisonFamily object: this object holds information about a protein family across a set of genomes
+    */
+    typedef structure {
+      int core;
+      mapping<string, list<tuple<Feature_id, list<int>, float>>> genome_features;
+      string id;
+      string type;
+      string protein_translation;
+      int number_genomes;
+      float fraction_genomes;
+      float fraction_consistent_annotations;
+      string most_consistent_role;
+    } GenomeComparisonFamily;
+
+    /*
+        num_found - number of all items found in query search (with 
+            only part of it returned in "families" list).
+    */
+    typedef structure {
+        string query;
+        int start;
+        list<GenomeComparisonFamily> families;
+        int num_found;
+    } SearchFamiliesFromCGResult;
+
+    funcdef search_families_from_comparison_genome(SearchFamiliesFromCG params) 
+        returns (SearchFamiliesFromCGResult result) authentication optional;
+
+    typedef structure {
+        string comparison_genome_ref;
+        string query;
+        list<column_sorting> sort_by;
+        int start;
+        int limit;
+        int num_found;
+    } SearchFunctionsFromCG;
+
+    typedef string Reaction_id;
+
+    /*
+        GenomeComparisonFunction object: this object holds information about a genome in a function across all genomes
+    */
+    typedef structure {
+        int core;
+        mapping<string, list<tuple<Feature_id, int, float>>> genome_features;
+        string id;
+        list<tuple<Reaction_id, string>> reactions;
+        string subsystem;
+        string primclass;
+        string subclass;
+        int number_genomes;
+        float fraction_genomes;
+        float fraction_consistent_families;
+        string most_consistent_family;
+    } GenomeComparisonFunction;
+
+    /*
+        num_found - number of all items found in query search (with 
+            only part of it returned in "functions" list).
+    */
+    typedef structure {
+        string query;
+        int start;
+        list<GenomeComparisonFunction> functions;
+        int num_found;
+    } SearchFunctionsFromCGResult;
+
+    funcdef search_functions_from_comparison_genome(SearchFunctionsFromCG params) 
+        returns (SearchFunctionsFromCGResult result) authentication optional;
+
+    typedef structure {
+        string comparison_genome_ref;
+        string query;
+        list<column_sorting> sort_by;
+        int start;
+        int limit;
+        int num_found;
+    } SearchComparisonGenomesFromCG;
+
+    typedef string Genome_ref;
+
+    /*
+        GenomeComparisonGenome object: this object holds information about a genome in a genome comparison
+    */
+    typedef structure {
+        string id;
+        Genome_ref genome_ref;
+        mapping<string, tuple<int, int>> genome_similarity;
+        string name;
+        string taxonomy;
+        int features;
+        int families;
+        int functions;
+    } GenomeComparisonGenome;
+
+    /*
+        num_found - number of all items found in query search (with 
+            only part of it returned in "comparison genomes" list).
+    */
+    typedef structure {
+        string query;
+        int start;
+        list<GenomeComparisonGenome> comparison_genomes;
+        int num_found;
+    } SearchComparisonGenomesFromCGResult;
+
+    funcdef search_comparison_genome_from_comparison_genome(SearchComparisonGenomesFromCG params) 
+        returns (SearchComparisonGenomesFromCGResult result) authentication optional;
 };

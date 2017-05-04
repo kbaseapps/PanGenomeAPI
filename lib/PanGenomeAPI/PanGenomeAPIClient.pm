@@ -119,9 +119,9 @@ sub new
 =begin html
 
 <pre>
-$params is a PanGenomeAPI.SearchOrthologs
-$result is a PanGenomeAPI.SearchOrthologsResult
-SearchOrthologs is a reference to a hash where the following keys are defined:
+$params is a PanGenomeAPI.SearchOrthologsFromPG
+$result is a PanGenomeAPI.SearchOrthologsFromPGResult
+SearchOrthologsFromPG is a reference to a hash where the following keys are defined:
 	ref has a value which is a string
 	query has a value which is a string
 	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
@@ -132,7 +132,7 @@ column_sorting is a reference to a list containing 2 items:
 	0: (column) a string
 	1: (ascending) a PanGenomeAPI.boolean
 boolean is an int
-SearchOrthologsResult is a reference to a hash where the following keys are defined:
+SearchOrthologsFromPGResult is a reference to a hash where the following keys are defined:
 	query has a value which is a string
 	start has a value which is an int
 	orthologs has a value which is a reference to a list where each element is a PanGenomeAPI.OrthologsData
@@ -155,9 +155,9 @@ OrthologsData is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$params is a PanGenomeAPI.SearchOrthologs
-$result is a PanGenomeAPI.SearchOrthologsResult
-SearchOrthologs is a reference to a hash where the following keys are defined:
+$params is a PanGenomeAPI.SearchOrthologsFromPG
+$result is a PanGenomeAPI.SearchOrthologsFromPGResult
+SearchOrthologsFromPG is a reference to a hash where the following keys are defined:
 	ref has a value which is a string
 	query has a value which is a string
 	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
@@ -168,7 +168,7 @@ column_sorting is a reference to a list containing 2 items:
 	0: (column) a string
 	1: (ascending) a PanGenomeAPI.boolean
 boolean is an int
-SearchOrthologsResult is a reference to a hash where the following keys are defined:
+SearchOrthologsFromPGResult is a reference to a hash where the following keys are defined:
 	query has a value which is a string
 	start has a value which is an int
 	orthologs has a value which is a reference to a list where each element is a PanGenomeAPI.OrthologsData
@@ -255,9 +255,9 @@ OrthologsData is a reference to a hash where the following keys are defined:
 =begin html
 
 <pre>
-$params is a PanGenomeAPI.SearchGenomes
-$result is a PanGenomeAPI.SearchGenomesResult
-SearchGenomes is a reference to a hash where the following keys are defined:
+$params is a PanGenomeAPI.SearchGenomesFromPG
+$result is a PanGenomeAPI.SearchGenomesFromPGResult
+SearchGenomesFromPG is a reference to a hash where the following keys are defined:
 	pangenome_ref has a value which is a string
 	genome_ref has a value which is a string
 	query has a value which is a string
@@ -269,7 +269,7 @@ column_sorting is a reference to a list containing 2 items:
 	0: (column) a string
 	1: (ascending) a PanGenomeAPI.boolean
 boolean is an int
-SearchGenomesResult is a reference to a hash where the following keys are defined:
+SearchGenomesFromPGResult is a reference to a hash where the following keys are defined:
 	query has a value which is a string
 	start has a value which is an int
 	features has a value which is a reference to a list where each element is a PanGenomeAPI.FeatureData
@@ -295,9 +295,9 @@ Location is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$params is a PanGenomeAPI.SearchGenomes
-$result is a PanGenomeAPI.SearchGenomesResult
-SearchGenomes is a reference to a hash where the following keys are defined:
+$params is a PanGenomeAPI.SearchGenomesFromPG
+$result is a PanGenomeAPI.SearchGenomesFromPGResult
+SearchGenomesFromPG is a reference to a hash where the following keys are defined:
 	pangenome_ref has a value which is a string
 	genome_ref has a value which is a string
 	query has a value which is a string
@@ -309,7 +309,7 @@ column_sorting is a reference to a list containing 2 items:
 	0: (column) a string
 	1: (ascending) a PanGenomeAPI.boolean
 boolean is an int
-SearchGenomesResult is a reference to a hash where the following keys are defined:
+SearchGenomesFromPGResult is a reference to a hash where the following keys are defined:
 	query has a value which is a string
 	start has a value which is an int
 	features has a value which is a reference to a list where each element is a PanGenomeAPI.FeatureData
@@ -386,6 +386,446 @@ Location is a reference to a hash where the following keys are defined:
     }
 }
  
+
+
+=head2 search_families_from_comparison_genome
+
+  $result = $obj->search_families_from_comparison_genome($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a PanGenomeAPI.SearchFamiliesFromCG
+$result is a PanGenomeAPI.SearchFamiliesFromCGResult
+SearchFamiliesFromCG is a reference to a hash where the following keys are defined:
+	comparison_genome_ref has a value which is a string
+	query has a value which is a string
+	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+	start has a value which is an int
+	limit has a value which is an int
+	num_found has a value which is an int
+column_sorting is a reference to a list containing 2 items:
+	0: (column) a string
+	1: (ascending) a PanGenomeAPI.boolean
+boolean is an int
+SearchFamiliesFromCGResult is a reference to a hash where the following keys are defined:
+	query has a value which is a string
+	start has a value which is an int
+	families has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonFamily
+	num_found has a value which is an int
+GenomeComparisonFamily is a reference to a hash where the following keys are defined:
+	core has a value which is an int
+	genome_features has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a reference to a list containing 3 items:
+		0: a PanGenomeAPI.Feature_id
+		1: a reference to a list where each element is an int
+		2: a float
+
+	id has a value which is a string
+	type has a value which is a string
+	protein_translation has a value which is a string
+	number_genomes has a value which is an int
+	fraction_genomes has a value which is a float
+	fraction_consistent_annotations has a value which is a float
+	most_consistent_role has a value which is a string
+Feature_id is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a PanGenomeAPI.SearchFamiliesFromCG
+$result is a PanGenomeAPI.SearchFamiliesFromCGResult
+SearchFamiliesFromCG is a reference to a hash where the following keys are defined:
+	comparison_genome_ref has a value which is a string
+	query has a value which is a string
+	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+	start has a value which is an int
+	limit has a value which is an int
+	num_found has a value which is an int
+column_sorting is a reference to a list containing 2 items:
+	0: (column) a string
+	1: (ascending) a PanGenomeAPI.boolean
+boolean is an int
+SearchFamiliesFromCGResult is a reference to a hash where the following keys are defined:
+	query has a value which is a string
+	start has a value which is an int
+	families has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonFamily
+	num_found has a value which is an int
+GenomeComparisonFamily is a reference to a hash where the following keys are defined:
+	core has a value which is an int
+	genome_features has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a reference to a list containing 3 items:
+		0: a PanGenomeAPI.Feature_id
+		1: a reference to a list where each element is an int
+		2: a float
+
+	id has a value which is a string
+	type has a value which is a string
+	protein_translation has a value which is a string
+	number_genomes has a value which is an int
+	fraction_genomes has a value which is a float
+	fraction_consistent_annotations has a value which is a float
+	most_consistent_role has a value which is a string
+Feature_id is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub search_families_from_comparison_genome
+{
+    my($self, @args) = @_;
+
+# Authentication: optional
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function search_families_from_comparison_genome (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to search_families_from_comparison_genome:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'search_families_from_comparison_genome');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "PanGenomeAPI.search_families_from_comparison_genome",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'search_families_from_comparison_genome',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method search_families_from_comparison_genome",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'search_families_from_comparison_genome',
+				       );
+    }
+}
+ 
+
+
+=head2 search_functions_from_comparison_genome
+
+  $result = $obj->search_functions_from_comparison_genome($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a PanGenomeAPI.SearchFunctionsFromCG
+$result is a PanGenomeAPI.SearchFunctionsFromCGResult
+SearchFunctionsFromCG is a reference to a hash where the following keys are defined:
+	comparison_genome_ref has a value which is a string
+	query has a value which is a string
+	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+	start has a value which is an int
+	limit has a value which is an int
+	num_found has a value which is an int
+column_sorting is a reference to a list containing 2 items:
+	0: (column) a string
+	1: (ascending) a PanGenomeAPI.boolean
+boolean is an int
+SearchFunctionsFromCGResult is a reference to a hash where the following keys are defined:
+	query has a value which is a string
+	start has a value which is an int
+	functions has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonFunction
+	num_found has a value which is an int
+GenomeComparisonFunction is a reference to a hash where the following keys are defined:
+	core has a value which is an int
+	genome_features has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a reference to a list containing 3 items:
+		0: a PanGenomeAPI.Feature_id
+		1: an int
+		2: a float
+
+	id has a value which is a string
+	reactions has a value which is a reference to a list where each element is a reference to a list containing 2 items:
+		0: a PanGenomeAPI.Reaction_id
+		1: a string
+
+	subsystem has a value which is a string
+	primclass has a value which is a string
+	subclass has a value which is a string
+	number_genomes has a value which is an int
+	fraction_genomes has a value which is a float
+	fraction_consistent_families has a value which is a float
+	most_consistent_family has a value which is a string
+Feature_id is a string
+Reaction_id is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a PanGenomeAPI.SearchFunctionsFromCG
+$result is a PanGenomeAPI.SearchFunctionsFromCGResult
+SearchFunctionsFromCG is a reference to a hash where the following keys are defined:
+	comparison_genome_ref has a value which is a string
+	query has a value which is a string
+	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+	start has a value which is an int
+	limit has a value which is an int
+	num_found has a value which is an int
+column_sorting is a reference to a list containing 2 items:
+	0: (column) a string
+	1: (ascending) a PanGenomeAPI.boolean
+boolean is an int
+SearchFunctionsFromCGResult is a reference to a hash where the following keys are defined:
+	query has a value which is a string
+	start has a value which is an int
+	functions has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonFunction
+	num_found has a value which is an int
+GenomeComparisonFunction is a reference to a hash where the following keys are defined:
+	core has a value which is an int
+	genome_features has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a reference to a list containing 3 items:
+		0: a PanGenomeAPI.Feature_id
+		1: an int
+		2: a float
+
+	id has a value which is a string
+	reactions has a value which is a reference to a list where each element is a reference to a list containing 2 items:
+		0: a PanGenomeAPI.Reaction_id
+		1: a string
+
+	subsystem has a value which is a string
+	primclass has a value which is a string
+	subclass has a value which is a string
+	number_genomes has a value which is an int
+	fraction_genomes has a value which is a float
+	fraction_consistent_families has a value which is a float
+	most_consistent_family has a value which is a string
+Feature_id is a string
+Reaction_id is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub search_functions_from_comparison_genome
+{
+    my($self, @args) = @_;
+
+# Authentication: optional
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function search_functions_from_comparison_genome (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to search_functions_from_comparison_genome:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'search_functions_from_comparison_genome');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "PanGenomeAPI.search_functions_from_comparison_genome",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'search_functions_from_comparison_genome',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method search_functions_from_comparison_genome",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'search_functions_from_comparison_genome',
+				       );
+    }
+}
+ 
+
+
+=head2 search_comparison_genome_from_comparison_genome
+
+  $result = $obj->search_comparison_genome_from_comparison_genome($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a PanGenomeAPI.SearchComparisonGenomesFromCG
+$result is a PanGenomeAPI.SearchComparisonGenomesFromCGResult
+SearchComparisonGenomesFromCG is a reference to a hash where the following keys are defined:
+	comparison_genome_ref has a value which is a string
+	query has a value which is a string
+	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+	start has a value which is an int
+	limit has a value which is an int
+	num_found has a value which is an int
+column_sorting is a reference to a list containing 2 items:
+	0: (column) a string
+	1: (ascending) a PanGenomeAPI.boolean
+boolean is an int
+SearchComparisonGenomesFromCGResult is a reference to a hash where the following keys are defined:
+	query has a value which is a string
+	start has a value which is an int
+	comparison_genomes has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonGenome
+	num_found has a value which is an int
+GenomeComparisonGenome is a reference to a hash where the following keys are defined:
+	id has a value which is a string
+	genome_ref has a value which is a PanGenomeAPI.Genome_ref
+	genome_similarity has a value which is a reference to a hash where the key is a string and the value is a reference to a list containing 2 items:
+		0: an int
+		1: an int
+
+	name has a value which is a string
+	taxonomy has a value which is a string
+	features has a value which is an int
+	families has a value which is an int
+	functions has a value which is an int
+Genome_ref is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a PanGenomeAPI.SearchComparisonGenomesFromCG
+$result is a PanGenomeAPI.SearchComparisonGenomesFromCGResult
+SearchComparisonGenomesFromCG is a reference to a hash where the following keys are defined:
+	comparison_genome_ref has a value which is a string
+	query has a value which is a string
+	sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+	start has a value which is an int
+	limit has a value which is an int
+	num_found has a value which is an int
+column_sorting is a reference to a list containing 2 items:
+	0: (column) a string
+	1: (ascending) a PanGenomeAPI.boolean
+boolean is an int
+SearchComparisonGenomesFromCGResult is a reference to a hash where the following keys are defined:
+	query has a value which is a string
+	start has a value which is an int
+	comparison_genomes has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonGenome
+	num_found has a value which is an int
+GenomeComparisonGenome is a reference to a hash where the following keys are defined:
+	id has a value which is a string
+	genome_ref has a value which is a PanGenomeAPI.Genome_ref
+	genome_similarity has a value which is a reference to a hash where the key is a string and the value is a reference to a list containing 2 items:
+		0: an int
+		1: an int
+
+	name has a value which is a string
+	taxonomy has a value which is a string
+	features has a value which is an int
+	families has a value which is an int
+	functions has a value which is an int
+Genome_ref is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub search_comparison_genome_from_comparison_genome
+{
+    my($self, @args) = @_;
+
+# Authentication: optional
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function search_comparison_genome_from_comparison_genome (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to search_comparison_genome_from_comparison_genome:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'search_comparison_genome_from_comparison_genome');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "PanGenomeAPI.search_comparison_genome_from_comparison_genome",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'search_comparison_genome_from_comparison_genome',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method search_comparison_genome_from_comparison_genome",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'search_comparison_genome_from_comparison_genome',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -429,16 +869,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'search_genomes_from_pangenome',
+                method_name => 'search_comparison_genome_from_comparison_genome',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method search_genomes_from_pangenome",
+            error => "Error invoking method search_comparison_genome_from_comparison_genome",
             status_line => $self->{client}->status_line,
-            method_name => 'search_genomes_from_pangenome',
+            method_name => 'search_comparison_genome_from_comparison_genome',
         );
     }
 }
@@ -539,7 +979,7 @@ a reference to a list containing 2 items:
 
 
 
-=head2 SearchOrthologs
+=head2 SearchOrthologsFromPG
 
 =over 4
 
@@ -643,7 +1083,7 @@ orthologs has a value which is a reference to a list where each element is a ref
 
 
 
-=head2 SearchOrthologsResult
+=head2 SearchOrthologsFromPGResult
 
 =over 4
 
@@ -652,7 +1092,7 @@ orthologs has a value which is a reference to a list where each element is a ref
 =item Description
 
 num_found - number of all items found in query search (with 
-    only part of it returned in "bins" list).
+    only part of it returned in "orthologs" list).
 
 
 =item Definition
@@ -685,7 +1125,7 @@ num_found has a value which is an int
 
 
 
-=head2 SearchGenomes
+=head2 SearchGenomesFromPG
 
 =over 4
 
@@ -818,7 +1258,7 @@ ontology_terms has a value which is a reference to a hash where the key is a str
 
 
 
-=head2 SearchGenomesResult
+=head2 SearchGenomesFromPGResult
 
 =over 4
 
@@ -851,6 +1291,513 @@ a reference to a hash where the following keys are defined:
 query has a value which is a string
 start has a value which is an int
 features has a value which is a reference to a list where each element is a PanGenomeAPI.FeatureData
+num_found has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchFamiliesFromCG
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+comparison_genome_ref has a value which is a string
+query has a value which is a string
+sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+start has a value which is an int
+limit has a value which is an int
+num_found has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+comparison_genome_ref has a value which is a string
+query has a value which is a string
+sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+start has a value which is an int
+limit has a value which is an int
+num_found has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 Feature_id
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
+=head2 GenomeComparisonFamily
+
+=over 4
+
+
+
+=item Description
+
+GenomeComparisonFamily object: this object holds information about a protein family across a set of genomes
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+core has a value which is an int
+genome_features has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a reference to a list containing 3 items:
+	0: a PanGenomeAPI.Feature_id
+	1: a reference to a list where each element is an int
+	2: a float
+
+id has a value which is a string
+type has a value which is a string
+protein_translation has a value which is a string
+number_genomes has a value which is an int
+fraction_genomes has a value which is a float
+fraction_consistent_annotations has a value which is a float
+most_consistent_role has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+core has a value which is an int
+genome_features has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a reference to a list containing 3 items:
+	0: a PanGenomeAPI.Feature_id
+	1: a reference to a list where each element is an int
+	2: a float
+
+id has a value which is a string
+type has a value which is a string
+protein_translation has a value which is a string
+number_genomes has a value which is an int
+fraction_genomes has a value which is a float
+fraction_consistent_annotations has a value which is a float
+most_consistent_role has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchFamiliesFromCGResult
+
+=over 4
+
+
+
+=item Description
+
+num_found - number of all items found in query search (with 
+    only part of it returned in "families" list).
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+query has a value which is a string
+start has a value which is an int
+families has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonFamily
+num_found has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+query has a value which is a string
+start has a value which is an int
+families has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonFamily
+num_found has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchFunctionsFromCG
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+comparison_genome_ref has a value which is a string
+query has a value which is a string
+sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+start has a value which is an int
+limit has a value which is an int
+num_found has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+comparison_genome_ref has a value which is a string
+query has a value which is a string
+sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+start has a value which is an int
+limit has a value which is an int
+num_found has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 Reaction_id
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
+=head2 GenomeComparisonFunction
+
+=over 4
+
+
+
+=item Description
+
+GenomeComparisonFunction object: this object holds information about a genome in a function across all genomes
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+core has a value which is an int
+genome_features has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a reference to a list containing 3 items:
+	0: a PanGenomeAPI.Feature_id
+	1: an int
+	2: a float
+
+id has a value which is a string
+reactions has a value which is a reference to a list where each element is a reference to a list containing 2 items:
+	0: a PanGenomeAPI.Reaction_id
+	1: a string
+
+subsystem has a value which is a string
+primclass has a value which is a string
+subclass has a value which is a string
+number_genomes has a value which is an int
+fraction_genomes has a value which is a float
+fraction_consistent_families has a value which is a float
+most_consistent_family has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+core has a value which is an int
+genome_features has a value which is a reference to a hash where the key is a string and the value is a reference to a list where each element is a reference to a list containing 3 items:
+	0: a PanGenomeAPI.Feature_id
+	1: an int
+	2: a float
+
+id has a value which is a string
+reactions has a value which is a reference to a list where each element is a reference to a list containing 2 items:
+	0: a PanGenomeAPI.Reaction_id
+	1: a string
+
+subsystem has a value which is a string
+primclass has a value which is a string
+subclass has a value which is a string
+number_genomes has a value which is an int
+fraction_genomes has a value which is a float
+fraction_consistent_families has a value which is a float
+most_consistent_family has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchFunctionsFromCGResult
+
+=over 4
+
+
+
+=item Description
+
+num_found - number of all items found in query search (with 
+    only part of it returned in "functions" list).
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+query has a value which is a string
+start has a value which is an int
+functions has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonFunction
+num_found has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+query has a value which is a string
+start has a value which is an int
+functions has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonFunction
+num_found has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchComparisonGenomesFromCG
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+comparison_genome_ref has a value which is a string
+query has a value which is a string
+sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+start has a value which is an int
+limit has a value which is an int
+num_found has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+comparison_genome_ref has a value which is a string
+query has a value which is a string
+sort_by has a value which is a reference to a list where each element is a PanGenomeAPI.column_sorting
+start has a value which is an int
+limit has a value which is an int
+num_found has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 Genome_ref
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
+=head2 GenomeComparisonGenome
+
+=over 4
+
+
+
+=item Description
+
+GenomeComparisonGenome object: this object holds information about a genome in a genome comparison
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+id has a value which is a string
+genome_ref has a value which is a PanGenomeAPI.Genome_ref
+genome_similarity has a value which is a reference to a hash where the key is a string and the value is a reference to a list containing 2 items:
+	0: an int
+	1: an int
+
+name has a value which is a string
+taxonomy has a value which is a string
+features has a value which is an int
+families has a value which is an int
+functions has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+id has a value which is a string
+genome_ref has a value which is a PanGenomeAPI.Genome_ref
+genome_similarity has a value which is a reference to a hash where the key is a string and the value is a reference to a list containing 2 items:
+	0: an int
+	1: an int
+
+name has a value which is a string
+taxonomy has a value which is a string
+features has a value which is an int
+families has a value which is an int
+functions has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchComparisonGenomesFromCGResult
+
+=over 4
+
+
+
+=item Description
+
+num_found - number of all items found in query search (with 
+    only part of it returned in "comparison genomes" list).
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+query has a value which is a string
+start has a value which is an int
+comparison_genomes has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonGenome
+num_found has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+query has a value which is a string
+start has a value which is an int
+comparison_genomes has a value which is a reference to a list where each element is a PanGenomeAPI.GenomeComparisonGenome
 num_found has a value which is an int
 
 
