@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
 from PanGenomeAPI.PanGenomeIndexer import PanGenomeIndexer
+import os
 #END_HEADER
 
 
@@ -30,6 +31,7 @@ class PanGenomeAPI:
     # be found
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
+        config['SDK_CALLBACK_URL'] = os.environ['SDK_CALLBACK_URL']
         self.indexer = PanGenomeIndexer(config)
         #END_CONSTRUCTOR
         pass
