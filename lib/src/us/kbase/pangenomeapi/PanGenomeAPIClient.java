@@ -180,23 +180,6 @@ public class PanGenomeAPIClient {
     }
 
     /**
-     * <p>Original spec-file function name: search_genomes_from_pangenome</p>
-     * <pre>
-     * </pre>
-     * @param   params   instance of type {@link us.kbase.pangenomeapi.SearchGenomesFromPG SearchGenomesFromPG}
-     * @return   parameter "result" of type {@link us.kbase.pangenomeapi.SearchGenomesFromPGResult SearchGenomesFromPGResult}
-     * @throws IOException if an IO exception occurs
-     * @throws JsonClientException if a JSON RPC exception occurs
-     */
-    public SearchGenomesFromPGResult searchGenomesFromPangenome(SearchGenomesFromPG params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
-        List<Object> args = new ArrayList<Object>();
-        args.add(params);
-        TypeReference<List<SearchGenomesFromPGResult>> retType = new TypeReference<List<SearchGenomesFromPGResult>>() {};
-        List<SearchGenomesFromPGResult> res = caller.jsonrpcCall("PanGenomeAPI.search_genomes_from_pangenome", args, retType, true, false, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
-    }
-
-    /**
      * <p>Original spec-file function name: search_families_from_comparison_genome</p>
      * <pre>
      * </pre>
