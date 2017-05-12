@@ -31,7 +31,6 @@ class PanGenomeAPI:
     # be found
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
-        config['SDK_CALLBACK_URL'] = os.environ['SDK_CALLBACK_URL']
         self.indexer = PanGenomeIndexer(config)
         #END_CONSTRUCTOR
         pass
@@ -82,56 +81,56 @@ class PanGenomeAPI:
         # return the results
         return [result]
 
-    def search_genomes_from_pangenome(self, ctx, params):
-        """
-        :param params: instance of type "SearchGenomesFromPG" -> structure:
-           parameter "pangenome_ref" of String, parameter "genome_ref" of
-           String, parameter "query" of String, parameter "sort_by" of list
-           of type "column_sorting" -> tuple of size 2: parameter "column" of
-           String, parameter "ascending" of type "boolean" (Indicates true or
-           false values, false = 0, true = 1 @range [0,1]), parameter "start"
-           of Long, parameter "limit" of Long, parameter "num_found" of Long
-        :returns: instance of type "SearchGenomesFromPGResult" (num_found -
-           number of all items found in query search (with only part of it
-           returned in "features" list).) -> structure: parameter "query" of
-           String, parameter "start" of Long, parameter "features" of list of
-           type "FeatureData" (aliases - mapping from alias name (key) to set
-           of alias sources (value), global_location - this is
-           location-related properties that are under sorting whereas items
-           in "location" array are not, feature_idx - legacy field keeping
-           the position of feature in feature array in legacy Genome object,
-           ontology_terms - mapping from term ID (key) to term name (value).)
-           -> structure: parameter "feature_id" of String, parameter
-           "aliases" of mapping from String to list of String, parameter
-           "function" of String, parameter "location" of list of type
-           "Location" -> structure: parameter "contig_id" of String,
-           parameter "start" of Long, parameter "strand" of String, parameter
-           "length" of Long, parameter "feature_type" of String, parameter
-           "global_location" of type "Location" -> structure: parameter
-           "contig_id" of String, parameter "start" of Long, parameter
-           "strand" of String, parameter "length" of Long, parameter
-           "feature_idx" of Long, parameter "ontology_terms" of mapping from
-           String to String, parameter "num_found" of Long
-        """
-        # ctx is the context object
-        # return variables are: result
-        #BEGIN search_genomes_from_pangenome
-        result = self.indexer.search_genomes_from_pangenome(ctx["token"],
-                                                            params.get("pangenome_ref", None),
-                                                            params.get("genome_ref", None),
-                                                            params.get("query", None),
-                                                            params.get("sort_by", None),
-                                                            params.get("start", None),
-                                                            params.get("limit", None),
-                                                            params.get("num_found", None))
-        #END search_genomes_from_pangenome
+    # def search_genomes_from_pangenome(self, ctx, params):
+    #     """
+    #     :param params: instance of type "SearchGenomesFromPG" -> structure:
+    #        parameter "pangenome_ref" of String, parameter "genome_ref" of
+    #        String, parameter "query" of String, parameter "sort_by" of list
+    #        of type "column_sorting" -> tuple of size 2: parameter "column" of
+    #        String, parameter "ascending" of type "boolean" (Indicates true or
+    #        false values, false = 0, true = 1 @range [0,1]), parameter "start"
+    #        of Long, parameter "limit" of Long, parameter "num_found" of Long
+    #     :returns: instance of type "SearchGenomesFromPGResult" (num_found -
+    #        number of all items found in query search (with only part of it
+    #        returned in "features" list).) -> structure: parameter "query" of
+    #        String, parameter "start" of Long, parameter "features" of list of
+    #        type "FeatureData" (aliases - mapping from alias name (key) to set
+    #        of alias sources (value), global_location - this is
+    #        location-related properties that are under sorting whereas items
+    #        in "location" array are not, feature_idx - legacy field keeping
+    #        the position of feature in feature array in legacy Genome object,
+    #        ontology_terms - mapping from term ID (key) to term name (value).)
+    #        -> structure: parameter "feature_id" of String, parameter
+    #        "aliases" of mapping from String to list of String, parameter
+    #        "function" of String, parameter "location" of list of type
+    #        "Location" -> structure: parameter "contig_id" of String,
+    #        parameter "start" of Long, parameter "strand" of String, parameter
+    #        "length" of Long, parameter "feature_type" of String, parameter
+    #        "global_location" of type "Location" -> structure: parameter
+    #        "contig_id" of String, parameter "start" of Long, parameter
+    #        "strand" of String, parameter "length" of Long, parameter
+    #        "feature_idx" of Long, parameter "ontology_terms" of mapping from
+    #        String to String, parameter "num_found" of Long
+    #     """
+    #     # ctx is the context object
+    #     # return variables are: result
+    #     #BEGIN search_genomes_from_pangenome
+    #     result = self.indexer.search_genomes_from_pangenome(ctx["token"],
+    #                                                         params.get("pangenome_ref", None),
+    #                                                         params.get("genome_ref", None),
+    #                                                         params.get("query", None),
+    #                                                         params.get("sort_by", None),
+    #                                                         params.get("start", None),
+    #                                                         params.get("limit", None),
+    #                                                         params.get("num_found", None))
+    #     #END search_genomes_from_pangenome
 
-        # At some point might do deeper type checking...
-        if not isinstance(result, dict):
-            raise ValueError('Method search_genomes_from_pangenome return value ' +
-                             'result is not type dict as required.')
-        # return the results
-        return [result]
+    #     # At some point might do deeper type checking...
+    #     if not isinstance(result, dict):
+    #         raise ValueError('Method search_genomes_from_pangenome return value ' +
+    #                          'result is not type dict as required.')
+    #     # return the results
+    #     return [result]
 
     def search_families_from_comparison_genome(self, ctx, params):
         """

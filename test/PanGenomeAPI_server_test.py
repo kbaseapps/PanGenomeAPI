@@ -215,35 +215,35 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('protein_translation', ret['orthologs'][0])
         self.assertIn('orthologs', ret['orthologs'][0])
 
-    def test_search_genomes_from_pangenome(self):
-        # non-exist genome_ref
-        search_params = {'pangenome_ref': self.pangenome_ref, 'genome_ref': self.pangenome_ref}
-        with self.assertRaisesRegexp(
-                    ValueError, 'genome_ref \[.*\] does not exist in available genomes \[.*\]'):
-            self.getImpl().search_genomes_from_pangenome(self.getContext(), search_params)
+    # def test_search_genomes_from_pangenome(self):
+    #     # non-exist genome_ref
+    #     search_params = {'pangenome_ref': self.pangenome_ref, 'genome_ref': self.pangenome_ref}
+    #     with self.assertRaisesRegexp(
+    #                 ValueError, 'genome_ref \[.*\] does not exist in available genomes \[.*\]'):
+    #         self.getImpl().search_genomes_from_pangenome(self.getContext(), search_params)
 
-        # no query
-        genome_ref = self.genome_refs[0]
-        search_params = {'pangenome_ref': self.pangenome_ref, 'genome_ref': genome_ref}
-        ret = self.getImpl().search_genomes_from_pangenome(self.getContext(), search_params)[0]
-        self.assertEquals(ret['num_found'], 1)
-        self.assertEquals(ret['query'], '')
-        self.assertEquals(ret['start'], 0)
-        self.assertIn('features', ret)
-        self.assertEquals(len(ret['features']), 1)
-        self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|')
+    #     # no query
+    #     genome_ref = self.genome_refs[0]
+    #     search_params = {'pangenome_ref': self.pangenome_ref, 'genome_ref': genome_ref}
+    #     ret = self.getImpl().search_genomes_from_pangenome(self.getContext(), search_params)[0]
+    #     self.assertEquals(ret['num_found'], 1)
+    #     self.assertEquals(ret['query'], '')
+    #     self.assertEquals(ret['start'], 0)
+    #     self.assertIn('features', ret)
+    #     self.assertEquals(len(ret['features']), 1)
+    #     self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|')
 
-        # with query
-        genome_ref = self.genome_refs[0]
-        search_params = {'pangenome_ref': self.pangenome_ref, 'genome_ref': genome_ref,
-                         'query': '387605483'}
-        ret = self.getImpl().search_genomes_from_pangenome(self.getContext(), search_params)[0]
-        self.assertEquals(ret['num_found'], 1)
-        self.assertEquals(ret['query'], '387605483')
-        self.assertEquals(ret['start'], 0)
-        self.assertIn('features', ret)
-        self.assertEquals(len(ret['features']), 1)
-        self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|')
+    #     # with query
+    #     genome_ref = self.genome_refs[0]
+    #     search_params = {'pangenome_ref': self.pangenome_ref, 'genome_ref': genome_ref,
+    #                      'query': '387605483'}
+    #     ret = self.getImpl().search_genomes_from_pangenome(self.getContext(), search_params)[0]
+    #     self.assertEquals(ret['num_found'], 1)
+    #     self.assertEquals(ret['query'], '387605483')
+    #     self.assertEquals(ret['start'], 0)
+    #     self.assertIn('features', ret)
+    #     self.assertEquals(len(ret['features']), 1)
+    #     self.assertEquals(ret['features'][0]['feature_id'], 'gi|387605483|ref|YP_006094339.1|')
 
     def test_search_families_from_comparison_genome(self):
         # no query
