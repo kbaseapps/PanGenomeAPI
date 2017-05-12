@@ -26,7 +26,9 @@ class PanGenomeIndexer:
             os.makedirs(self.comparison_genome_index_dir)
 
         self.debug = "debug" in config and config["debug"] == "1"
-        self.callback_url = os.environ['SDK_CALLBACK_URL']
+
+        self.callback_url = config['SDK_CALLBACK_URL']
+        # self.callback_url = os.environ['SDK_CALLBACK_URL']
         self.gsu = GenomeSearchUtil(self.callback_url)
         self.dfu = DataFileUtil(self.callback_url)
 
