@@ -128,15 +128,15 @@ class PanGenomeAPITest(unittest.TestCase):
 
         cls.pangenome_ref = pangenome_ret.get('pg_ref')
 
-        # # build comparison genome object
-        # comparison_output_name = "comparison_genome.1"
-        # comparison_genome_ret = cls.gcs.compare_genomes({
-        #     'pangenome_ref': cls.pangenome_ref,
-        #     'workspace': cls.ws_info[1],
-        #     'output_id': comparison_output_name
-        #     })
+        # build comparison genome object
+        comparison_output_name = "comparison_genome.1"
+        comparison_genome_ret = cls.gcs.compare_genomes({
+            'pangenome_ref': cls.pangenome_ref,
+            'workspace': cls.ws_info[1],
+            'output_id': comparison_output_name
+            })
 
-        # cls.comparison_genome_ref = comparison_genome_ret.get('cg_ref')
+        cls.comparison_genome_ref = comparison_genome_ret.get('cg_ref')
 
     def getWsClient(self):
         return self.__class__.wsClient
