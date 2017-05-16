@@ -54,7 +54,7 @@ class PanGenomeViewer:
             features = object_info.get('features')
 
             for feature in features:
-                if feature.get('type') == 'CDS':
+                # if feature.get('type') == 'CDS':
                     gene_id = feature.get('id')
                     genome_gene_map.update({gene_id: self.gene_map.get(gene_id)})
 
@@ -93,7 +93,8 @@ class PanGenomeViewer:
         for genome_ref, genome_value in self.genome_map.items():
             genome_genes = len(genome_value)
             if genome_value:
-                genome_homolog_family_genes = sum(genome_value.values())
+                genome_homolog_family_genes = sum(
+                                            [x for x in genome_value.values() if x is not None])
             else:
                 genome_homolog_family_genes = 0
             result.update({genome_ref: {
