@@ -54,8 +54,9 @@ class PanGenomeViewer:
             features = object_info.get('features')
 
             for feature in features:
-                gene_id = feature.get('id')
-                genome_gene_map.update({gene_id: self.gene_map.get(gene_id)})
+                if feature.get('type') == 'CDS':
+                    gene_id = feature.get('id')
+                    genome_gene_map.update({gene_id: self.gene_map.get(gene_id)})
 
             self.genome_map.update({genome_ref: genome_gene_map})
 
@@ -70,14 +71,20 @@ class PanGenomeViewer:
 
         # Total # of protein coding genes
         genes = len(self.gene_map)
-        homolog_family_genes = sum(self.gene_map.values())
+        if self.gene_map:
+            homolog_family_genes = sum(self.gene_map.values())
+        else:
+            homolog_family_genes = 0
         result.update({'genes': {'genes_count': genes,
                                  'homolog_family_genes_count': homolog_family_genes,
                                  'singleton_family_genes_count': genes - homolog_family_genes}})
 
         # Total # of families
         families = len(self.family_map)
-        homolog_families = sum(self.family_map.values())
+        if self.family_map:
+            homolog_families = sum(self.family_map.values())
+        else:
+            homolog_families = 0
         result.update({'families': {'families_count': families,
                                     'homolog_families_count': homolog_families,
                                     'singleton_families_count': families - homolog_families}})
@@ -85,7 +92,10 @@ class PanGenomeViewer:
         # Genomes
         for genome_ref, genome_value in self.genome_map.items():
             genome_genes = len(genome_value)
-            genome_homolog_family_genes = sum(genome_value.values())
+            if genome_value:
+                genome_homolog_family_genes = sum(genome_value.values())
+            else:
+                genome_homolog_family_genes = 0
             result.update({genome_ref: {
                         'genome_genes': genome_genes,
                         'genome_homolog_family_genes': genome_homolog_family_genes,

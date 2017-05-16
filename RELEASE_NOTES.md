@@ -5,4 +5,7 @@ Add basic PanGenome indexer
 Add generic TableIndexer
 
 1.0.3:
-Add PanGenomeViewer helper
+Add PanGenomeViewer 
+
+1.0.4:
+Fix Genome with no genes error
