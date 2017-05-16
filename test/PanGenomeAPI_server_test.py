@@ -156,6 +156,17 @@ class PanGenomeAPITest(unittest.TestCase):
     def getContext(self):
         return self.__class__.ctx
 
+    def test_compute_summary_from_pangenome(self):
+        search_params = {'pangenome_ref': self.pangenome_ref}
+        ret = self.getImpl().compute_summary_from_pangenome(self.getContext(), search_params)[0]
+        pprint(ret)
+        self.assertIn('families', ret)
+        self.assertIn('genes', ret)
+        self.assertIn('families', ret)
+        self.assertIn('shared_family_map', ret)
+        self.assertEquals(ret['genomes'], 2)
+        self.assertEquals(ret['pangenome_id'], 'pangenome.1')
+
     def test_search_orthologs_from_pangenome(self):
         # no query
         search_params = {'pangenome_ref': self.pangenome_ref}

@@ -147,6 +147,22 @@ class PanGenomeAPI(object):
             'PanGenomeAPI.search_comparison_genome_from_comparison_genome',
             [params], self._service_ver, context)
 
+    def compute_summary_from_pangenome(self, params, context=None):
+        """
+        :param params: instance of type "ComputeSummaryFromPG" -> structure:
+           parameter "pangenome_ref" of String
+        :returns: instance of type "ComputeSummaryFromPGResult" -> structure:
+           parameter "families" of mapping from String to Long, parameter
+           "genes" of mapping from String to Long, parameter
+           "shared_family_map" of mapping from String to mapping from String
+           to Long, parameter "genome_ref_name_map" of mapping from String to
+           mapping from String to String, parameter "pangenome_id" of String,
+           parameter "genomes" of Long
+        """
+        return self._client.call_method(
+            'PanGenomeAPI.compute_summary_from_pangenome',
+            [params], self._service_ver, context)
+
     def status(self, context=None):
         return self._client.call_method('PanGenomeAPI.status',
                                         [], self._service_ver, context)

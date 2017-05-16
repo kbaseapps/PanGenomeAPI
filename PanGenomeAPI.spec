@@ -175,4 +175,20 @@ module PanGenomeAPI {
 
     funcdef search_comparison_genome_from_comparison_genome(SearchComparisonGenomesFromCG params) 
         returns (SearchComparisonGenomesFromCGResult result) authentication optional;
+
+    typedef structure {
+        string pangenome_ref;
+    } ComputeSummaryFromPG;
+
+    typedef structure {
+        mapping<string, int>families;
+        mapping<string, int>genes;
+        mapping<string, mapping<string, int>>shared_family_map;
+        mapping<string, mapping<string, string>>genome_ref_name_map;
+        string pangenome_id;
+        int genomes;
+    } ComputeSummaryFromPGResult;
+
+    funcdef compute_summary_from_pangenome(ComputeSummaryFromPG params) 
+        returns (ComputeSummaryFromPGResult result) authentication optional;
 };

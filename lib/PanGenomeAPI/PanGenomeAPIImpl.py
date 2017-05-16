@@ -20,9 +20,9 @@ class PanGenomeAPI:
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.0.2"
+    VERSION = "1.0.3"
     GIT_URL = "https://github.com/Tianhao-Gu/PanGenomeAPI.git"
-    GIT_COMMIT_HASH = "49f8e63d2b598e0da7a9d2011f87c77efad4e819"
+    GIT_COMMIT_HASH = "9f8f66c6a95d5d2395cf8f52b074cbe0119e356a"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -209,6 +209,33 @@ class PanGenomeAPI:
         # At some point might do deeper type checking...
         if not isinstance(result, dict):
             raise ValueError('Method search_comparison_genome_from_comparison_genome return value ' +
+                             'result is not type dict as required.')
+        # return the results
+        return [result]
+
+    def compute_summary_from_pangenome(self, ctx, params):
+        """
+        :param params: instance of type "ComputeSummaryFromPG" -> structure:
+           parameter "pangenome_ref" of String
+        :returns: instance of type "ComputeSummaryFromPGResult" -> structure:
+           parameter "families" of mapping from String to Long, parameter
+           "genes" of mapping from String to Long, parameter
+           "shared_family_map" of mapping from String to mapping from String
+           to Long, parameter "genome_ref_name_map" of mapping from String to
+           mapping from String to String, parameter "pangenome_id" of String,
+           parameter "genomes" of Long
+        """
+        # ctx is the context object
+        # return variables are: result
+        #BEGIN compute_summary_from_pangenome
+        result = self.indexer.compute_summary_from_pangenome(
+                                                          ctx["token"],
+                                                          params.get("pangenome_ref", None))
+        #END compute_summary_from_pangenome
+
+        # At some point might do deeper type checking...
+        if not isinstance(result, dict):
+            raise ValueError('Method compute_summary_from_pangenome return value ' +
                              'result is not type dict as required.')
         # return the results
         return [result]
