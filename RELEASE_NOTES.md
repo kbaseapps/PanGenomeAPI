@@ -9,3 +9,6 @@ Add PanGenomeViewer
 
 1.0.4:
 Fix Genome with no genes error
+
+1.0.5:
+Fix unmatched shared_family_map
