@@ -54,7 +54,7 @@ class PanGenomeViewer:
             features = object_info.get('features')
 
             for feature in features:
-                # if feature.get('type') == 'CDS':
+                if feature.get('type') == 'CDS':
                     gene_id = feature.get('id')
                     genome_gene_map.update({gene_id: self.gene_map.get(gene_id)})
 
