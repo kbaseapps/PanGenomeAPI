@@ -40,7 +40,8 @@ class PanGenomeViewer:
         for shared_family_genome_ref in shared_family_genome_refs:
             shared_family_genome_map = self.shared_family_map.get(shared_family_genome_ref).copy()
             for shared_family_genome_ref_copy in shared_family_genome_refs:
-                shared_family_genome_map[shared_family_genome_ref_copy] += 1
+                if shared_family_genome_ref_copy != shared_family_genome_ref:
+                    shared_family_genome_map[shared_family_genome_ref_copy] += 1
             self.shared_family_map.update({shared_family_genome_ref: shared_family_genome_map})
 
     def _process_genomes(self, genome_refs):
@@ -56,7 +57,10 @@ class PanGenomeViewer:
             for feature in features:
                 # if feature.get('type') == 'CDS':
                     gene_id = feature.get('id')
-                    genome_gene_map.update({gene_id: self.gene_map.get(gene_id)})
+                    if self.gene_map.get(gene_id):
+                        genome_gene_map.update({gene_id: self.gene_map.get(gene_id)})
+                    else:
+                        genome_gene_map.update({gene_id: False})
 
             self.genome_map.update({genome_ref: genome_gene_map})
 
@@ -93,8 +97,8 @@ class PanGenomeViewer:
         for genome_ref, genome_value in self.genome_map.items():
             genome_genes = len(genome_value)
             if genome_value:
-                genome_homolog_family_genes = sum(
-                                            [x for x in genome_value.values() if x is not None])
+                genome_homolog_family_genes = sum(genome_value.values())
+                                            # [x for x in genome_value.values() if x is not None])
             else:
                 genome_homolog_family_genes = 0
             result.update({genome_ref: {
@@ -104,6 +108,8 @@ class PanGenomeViewer:
                         }})
 
         #  Shared homolog familes
+        for genome_ref, genome_family_map in self.shared_family_map.items():
+            genome_family_map[genome_ref] = result[genome_ref]['genome_homolog_family_genes']
         result.update({'shared_family_map': self.shared_family_map})
 
         result.update({'genome_ref_name_map': self.genome_ref_name_map})
