@@ -2,6 +2,7 @@
 import os
 
 from PanGenomeAPI.TableIndexer import TableIndexer
+from PanGenomeAPI.PanGenomeViewer import PanGenomeViewer
 
 
 class PanGenomeIndexer:
@@ -80,5 +81,12 @@ class PanGenomeIndexer:
                                      query, sort_by, start, limit, num_found)
 
         ret = table_indexer.run_search()
+
+        return ret
+
+    def compute_summary_from_pangenome(self, token, ref):
+
+        pangenome_viewer = PanGenomeViewer(ref, token, self.ws_url)
+        ret = pangenome_viewer.compute_summary()
 
         return ret

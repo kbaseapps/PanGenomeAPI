@@ -349,6 +349,10 @@ class Application(object):
                              name='PanGenomeAPI.search_comparison_genome_from_comparison_genome',
                              types=[dict])
         self.method_authentication['PanGenomeAPI.search_comparison_genome_from_comparison_genome'] = 'optional'  # noqa
+        self.rpc_service.add(impl_PanGenomeAPI.compute_summary_from_pangenome,
+                             name='PanGenomeAPI.compute_summary_from_pangenome',
+                             types=[dict])
+        self.method_authentication['PanGenomeAPI.compute_summary_from_pangenome'] = 'optional'  # noqa
         self.rpc_service.add(impl_PanGenomeAPI.status,
                              name='PanGenomeAPI.status',
                              types=[dict])

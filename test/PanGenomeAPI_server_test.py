@@ -128,15 +128,15 @@ class PanGenomeAPITest(unittest.TestCase):
 
         cls.pangenome_ref = pangenome_ret.get('pg_ref')
 
-        # build comparison genome object
-        comparison_output_name = "comparison_genome.1"
-        comparison_genome_ret = cls.gcs.compare_genomes({
-            'pangenome_ref': cls.pangenome_ref,
-            'workspace': cls.ws_info[1],
-            'output_id': comparison_output_name
-            })
+        # # build comparison genome object
+        # comparison_output_name = "comparison_genome.1"
+        # comparison_genome_ret = cls.gcs.compare_genomes({
+        #     'pangenome_ref': cls.pangenome_ref,
+        #     'workspace': cls.ws_info[1],
+        #     'output_id': comparison_output_name
+        #     })
 
-        cls.comparison_genome_ref = comparison_genome_ret.get('cg_ref')
+        # cls.comparison_genome_ref = comparison_genome_ret.get('cg_ref')
 
     def getWsClient(self):
         return self.__class__.wsClient
@@ -155,6 +155,17 @@ class PanGenomeAPITest(unittest.TestCase):
 
     def getContext(self):
         return self.__class__.ctx
+
+    def test_compute_summary_from_pangenome(self):
+        search_params = {'pangenome_ref': self.pangenome_ref}
+        ret = self.getImpl().compute_summary_from_pangenome(self.getContext(), search_params)[0]
+        pprint(ret)
+        self.assertIn('families', ret)
+        self.assertIn('genes', ret)
+        self.assertIn('families', ret)
+        self.assertIn('shared_family_map', ret)
+        self.assertEquals(ret['genomes'], 2)
+        self.assertEquals(ret['pangenome_id'], 'pangenome.1')
 
     def test_search_orthologs_from_pangenome(self):
         # no query
