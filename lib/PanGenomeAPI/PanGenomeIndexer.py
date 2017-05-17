@@ -39,6 +39,10 @@ class PanGenomeIndexer:
 
         ret = table_indexer.run_search()
 
+        for family in ret['families']:
+            if family['genome_features']:
+                family['genome_features'] = eval(family['genome_features'])
+
         return ret
 
     def search_functions_from_comparison_genome(self, token, ref,
@@ -55,6 +59,10 @@ class PanGenomeIndexer:
 
         ret = table_indexer.run_search()
 
+        for function in ret['functions']:
+            if function['genome_features']:
+                function['genome_features'] = eval(function['genome_features'])
+
         return ret
 
     def search_comparison_genome_from_comparison_genome(self, token, ref,
@@ -69,6 +77,10 @@ class PanGenomeIndexer:
                                      query, sort_by, start, limit, num_found)
 
         ret = table_indexer.run_search()
+
+        for genome in ret['genomes']:
+            if genome['genome_similarity']:
+                genome['genome_similarity'] = eval(genome['genome_similarity'])
 
         return ret
 

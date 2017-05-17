@@ -249,6 +249,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('fraction_genomes', ret['families'][0])
         self.assertIn('fraction_consistent_annotations', ret['families'][0])
         self.assertIn('most_consistent_role', ret['families'][0])
+        self.assertIsInstance(ret['families'][0]['genome_features'], dict)
 
         # with query
         search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'query': '238899407'}
@@ -268,6 +269,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('fraction_genomes', ret['families'][0])
         self.assertIn('fraction_consistent_annotations', ret['families'][0])
         self.assertIn('most_consistent_role', ret['families'][0])
+        self.assertIsInstance(ret['families'][0]['genome_features'], dict)
 
         # with limit
         search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'limit': 1}
@@ -287,6 +289,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('fraction_genomes', ret['families'][0])
         self.assertIn('fraction_consistent_annotations', ret['families'][0])
         self.assertIn('most_consistent_role', ret['families'][0])
+        self.assertIsInstance(ret['families'][0]['genome_features'], dict)
 
         # with start limit
         search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'start': 1,
@@ -307,6 +310,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('fraction_genomes', ret['families'][0])
         self.assertIn('fraction_consistent_annotations', ret['families'][0])
         self.assertIn('most_consistent_role', ret['families'][0])
+        self.assertIsInstance(ret['families'][0]['genome_features'], dict)
 
     def test_search_functions_from_comparison_genome(self):
         # no query
@@ -329,6 +333,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('fraction_genomes', ret['functions'][0])
         self.assertIn('fraction_consistent_families', ret['functions'][0])
         self.assertIn('most_consistent_family', ret['functions'][0])
+        self.assertIsInstance(ret['functions'][0]['genome_features'], dict)
 
         # with query
         search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'query': '387605483'}
@@ -352,6 +357,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('fraction_genomes', ret['functions'][0])
         self.assertIn('fraction_consistent_families', ret['functions'][0])
         self.assertIn('most_consistent_family', ret['functions'][0])
+        self.assertIsInstance(ret['functions'][0]['genome_features'], dict)
 
         # with limit
         search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'limit': 1}
@@ -373,6 +379,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('fraction_genomes', ret['functions'][0])
         self.assertIn('fraction_consistent_families', ret['functions'][0])
         self.assertIn('most_consistent_family', ret['functions'][0])
+        self.assertIsInstance(ret['functions'][0]['genome_features'], dict)
 
         # with start limit
         search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'start': 1,
@@ -394,6 +401,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('fraction_genomes', ret['functions'][0])
         self.assertIn('fraction_consistent_families', ret['functions'][0])
         self.assertIn('most_consistent_family', ret['functions'][0])
+        self.assertIsInstance(ret['functions'][0]['genome_features'], dict)
 
     def test_search_comparison_genome_from_comparison_genome(self):
         # no query
@@ -413,6 +421,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('features', ret['genomes'][0])
         self.assertIn('families', ret['genomes'][0])
         self.assertIn('functions', ret['genomes'][0])
+        self.assertIsInstance(ret['genomes'][0]['genome_similarity'], dict)
 
         # with query
         search_params = {'comparison_genome_ref': self.comparison_genome_ref,
@@ -433,6 +442,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('features', ret['genomes'][0])
         self.assertIn('families', ret['genomes'][0])
         self.assertIn('functions', ret['genomes'][0])
+        self.assertIsInstance(ret['genomes'][0]['genome_similarity'], dict)
 
         # with limit
         search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'limit': 1}
@@ -450,6 +460,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('features', ret['genomes'][0])
         self.assertIn('families', ret['genomes'][0])
         self.assertIn('functions', ret['genomes'][0])
+        self.assertIsInstance(ret['genomes'][0]['genome_similarity'], dict)
 
         # with start limit
         search_params = {'comparison_genome_ref': self.comparison_genome_ref, 'start': 1,
