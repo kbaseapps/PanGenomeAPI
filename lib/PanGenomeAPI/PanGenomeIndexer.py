@@ -95,8 +95,11 @@ class PanGenomeIndexer:
         ret = table_indexer.run_search()
 
         for orthologs in ret['orthologs']:
-            if orthologs['orthologs']:
-                orthologs['orthologs'] = list(eval(orthologs['orthologs']))
+            orthologs_string = orthologs['orthologs']
+            if orthologs_string:
+                orthologs['orthologs'] = list(eval(orthologs_string))
+                if not isinstance(orthologs['orthologs'][0], list):
+                    orthologs['orthologs'] = [orthologs['orthologs']]
 
         return ret
 
