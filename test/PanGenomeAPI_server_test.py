@@ -182,6 +182,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('md5', ret['orthologs'][0])
         self.assertIn('protein_translation', ret['orthologs'][0])
         self.assertIn('orthologs', ret['orthologs'][0])
+        self.assertIsInstance(ret['orthologs'][0]['orthologs'], list)
 
         # with query
         search_params = {'pangenome_ref': self.pangenome_ref, 'query': '238899407'}
@@ -196,6 +197,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('md5', ret['orthologs'][0])
         self.assertIn('protein_translation', ret['orthologs'][0])
         self.assertIn('orthologs', ret['orthologs'][0])
+        self.assertIsInstance(ret['orthologs'][0]['orthologs'], list)
 
         # with limit
         search_params = {'pangenome_ref': self.pangenome_ref, 'limit': 1}
@@ -211,6 +213,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('md5', ret['orthologs'][0])
         self.assertIn('protein_translation', ret['orthologs'][0])
         self.assertIn('orthologs', ret['orthologs'][0])
+        self.assertIsInstance(ret['orthologs'][0]['orthologs'], list)
 
         # with start limit
         search_params = {'pangenome_ref': self.pangenome_ref, 'start': 1, 'limit': 1}
@@ -225,6 +228,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('md5', ret['orthologs'][0])
         self.assertIn('protein_translation', ret['orthologs'][0])
         self.assertIn('orthologs', ret['orthologs'][0])
+        self.assertIsInstance(ret['orthologs'][0]['orthologs'], list)
 
     def test_search_families_from_comparison_genome(self):
         # no query
