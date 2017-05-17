@@ -164,7 +164,7 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('genes', ret)
         self.assertIn('families', ret)
         self.assertIn('shared_family_map', ret)
-        self.assertEquals(ret['genomes'], 2)
+        self.assertEquals(len(ret['genomes']), 2)
         self.assertEquals(ret['pangenome_id'], 'pangenome.1')
 
     def test_search_orthologs_from_pangenome(self):
