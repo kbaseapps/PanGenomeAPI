@@ -82,6 +82,10 @@ class PanGenomeIndexer:
 
         ret = table_indexer.run_search()
 
+        for orthologs in ret['orthologs']:
+            if orthologs['orthologs']:
+                orthologs['orthologs'] = list(eval(orthologs['orthologs']))
+
         return ret
 
     def compute_summary_from_pangenome(self, token, ref):
