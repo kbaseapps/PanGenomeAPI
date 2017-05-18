@@ -20,9 +20,9 @@ class PanGenomeAPI:
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.0.6"
+    VERSION = "1.0.7"
     GIT_URL = "https://github.com/Tianhao-Gu/PanGenomeAPI.git"
-    GIT_COMMIT_HASH = "cbe6f4265c39c846e63db5712b56f460d9b78ed1"
+    GIT_COMMIT_HASH = "3d1cb429d146842e3961e2497177b5eb74dd2653"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
