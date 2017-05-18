@@ -230,6 +230,26 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('orthologs', ret['orthologs'][0])
         self.assertIsInstance(ret['orthologs'][0]['orthologs'], list)
 
+        # sort by id
+        search_params = {'pangenome_ref': self.pangenome_ref, 'sort_by': [['id', 0]]}
+        ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
+        self.assertEquals(ret['num_found'], 2)
+        self.assertEquals(ret['query'], '')
+        self.assertEquals(ret['start'], 0)
+        self.assertEquals(len(ret['orthologs']), 2)
+        id_1 = ret['orthologs'][0]['id']
+        self.assertIn('type', ret['orthologs'][0])
+        self.assertIn('function', ret['orthologs'][0])
+        self.assertIn('md5', ret['orthologs'][0])
+        self.assertIn('protein_translation', ret['orthologs'][0])
+        self.assertIn('orthologs', ret['orthologs'][0])
+        self.assertIsInstance(ret['orthologs'][0]['orthologs'], list)
+
+        search_params = {'pangenome_ref': self.pangenome_ref, 'sort_by': [['id', 1]]}
+        ret = self.getImpl().search_orthologs_from_pangenome(self.getContext(), search_params)[0]
+        id_2 = ret['orthologs'][1]['id']
+        self.assertEquals(id_1, id_2)
+
     def test_search_families_from_comparison_genome(self):
         # no query
         search_params = {'comparison_genome_ref': self.comparison_genome_ref}
