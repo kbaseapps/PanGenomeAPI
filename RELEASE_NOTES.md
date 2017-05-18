@@ -13,4 +13,7 @@ Fix Genome with no genes error
 1.0.5/1.0.6::
 Fix unmatched shared_family_map
 
+1.0.7:
+Append gene function to ortholog search result
+
 
