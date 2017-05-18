@@ -105,20 +105,16 @@ class PanGenomeIndexer:
         ws = Workspace(self.ws_url, token=token)
         genome_feature_function_map = {}
         for orthologs in ret['orthologs']:
-            orthologs_objs = orthologs['orthologs']
-            for orthologs_obj in orthologs_objs:
+            for orthologs_obj in orthologs['orthologs']:
                 gene_id = orthologs_obj[0]
-                genome_ref = orthologs_obj[2]
 
                 if gene_id in genome_feature_function_map:
                     orthologs_obj.append(genome_feature_function_map.get(gene_id))
                 else:
                     object_info = ws.get_objects2(
-                                {'objects': [{'ref': genome_ref}]})['data'][0]['data']
-                    features = object_info['features']
-                    for feature in features:
-                        gene_function = feature.get('function')
-                        genome_feature_function_map.update({gene_id: gene_function})
+                                {'objects': [{'ref': orthologs_obj[2]}]})['data'][0]['data']
+                    map(lambda feature: genome_feature_function_map.update(
+                                    {gene_id: feature.get('function')}), object_info['features'])
 
                     orthologs_obj.append(genome_feature_function_map.get(gene_id))
 
