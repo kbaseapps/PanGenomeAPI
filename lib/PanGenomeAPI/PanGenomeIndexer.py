@@ -33,12 +33,11 @@ class PanGenomeIndexer:
         info_included = ['core', 'genome_features', 'id', 'type', 'protein_translation',
                          'number_genomes', 'fraction_genomes', 'fraction_consistent_annotations',
                          'most_consistent_role']
-        table_indexer = TableIndexer(ref, token, self.debug, self.ws_url,
-                                     self.comparison_genome_index_dir,
-                                     self.FAMILIES_SUFFIX, search_object, info_included,
-                                     query, sort_by, start, limit, num_found)
+        table_indexer = TableIndexer(token, self.ws_url)
 
-        ret = table_indexer.run_search()
+        ret = table_indexer.run_search(ref, self.comparison_genome_index_dir,
+                                       self.FAMILIES_SUFFIX, search_object, info_included,
+                                       query, sort_by, start, limit, num_found, self.debug)
 
         for family in ret['families']:
             if family['genome_features']:
@@ -53,12 +52,11 @@ class PanGenomeIndexer:
         info_included = ['core', 'genome_features', 'id', 'reactions', 'subsystem', 'primclass',
                          'subclass', 'number_genomes', 'fraction_genomes',
                          'fraction_consistent_families', 'most_consistent_family']
-        table_indexer = TableIndexer(ref, token, self.debug, self.ws_url,
-                                     self.comparison_genome_index_dir,
-                                     self.FUNCTIONS_SUFFIX, search_object, info_included,
-                                     query, sort_by, start, limit, num_found)
+        table_indexer = TableIndexer(token, self.ws_url)
 
-        ret = table_indexer.run_search()
+        ret = table_indexer.run_search(ref, self.comparison_genome_index_dir,
+                                       self.FUNCTIONS_SUFFIX, search_object, info_included,
+                                       query, sort_by, start, limit, num_found, self.debug)
 
         for function in ret['functions']:
             if function['genome_features']:
@@ -72,12 +70,11 @@ class PanGenomeIndexer:
         search_object = 'genomes'
         info_included = ['id', 'genome_ref', 'genome_similarity', 'name', 'taxonomy', 'features',
                          'families', 'functions']
-        table_indexer = TableIndexer(ref, token, self.debug, self.ws_url,
-                                     self.comparison_genome_index_dir,
-                                     self.COMPARISON_GENOMES_SUFFIX, search_object, info_included,
-                                     query, sort_by, start, limit, num_found)
+        table_indexer = TableIndexer(token, self.ws_url)
 
-        ret = table_indexer.run_search()
+        ret = table_indexer.run_search(ref, self.comparison_genome_index_dir,
+                                       self.COMPARISON_GENOMES_SUFFIX, search_object, info_included,
+                                       query, sort_by, start, limit, num_found, self.debug)
 
         for genome in ret['genomes']:
             if genome['genome_similarity']:
@@ -89,11 +86,11 @@ class PanGenomeIndexer:
 
         search_object = 'orthologs'
         info_included = ['id', 'type', 'function', 'md5', 'protein_translation', 'orthologs']
-        table_indexer = TableIndexer(ref, token, self.debug, self.ws_url, self.pangenome_index_dir,
-                                     self.ORTHOLOGS_SUFFIX, search_object, info_included,
-                                     query, sort_by, start, limit, num_found)
+        table_indexer = TableIndexer(token, self.ws_url)
 
-        ret = table_indexer.run_search()
+        ret = table_indexer.run_search(ref, self.pangenome_index_dir,
+                                       self.ORTHOLOGS_SUFFIX, search_object, info_included,
+                                       query, sort_by, start, limit, num_found, self.debug)
 
         for orthologs in ret['orthologs']:
             orthologs_string = orthologs['orthologs']
