@@ -106,7 +106,6 @@ class PanGenomeIndexer:
                 gene_id = orthologs_obj[0]
 
                 if gene_id in genome_feature_function_map:
-                    print 'yealalallalaal'
                     orthologs_obj.append(genome_feature_function_map.get(gene_id))
                 else:
                     included = ["/features/[*]/function",
