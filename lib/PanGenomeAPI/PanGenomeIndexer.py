@@ -73,8 +73,9 @@ class PanGenomeIndexer:
         table_indexer = TableIndexer(token, self.ws_url)
 
         ret = table_indexer.run_search(ref, self.comparison_genome_index_dir,
-                                       self.COMPARISON_GENOMES_SUFFIX, search_object, info_included,
-                                       query, sort_by, start, limit, num_found, self.debug)
+                                       self.COMPARISON_GENOMES_SUFFIX, search_object, 
+                                       info_included, query, sort_by, start, limit, num_found, 
+                                       self.debug)
 
         for genome in ret['genomes']:
             if genome['genome_similarity']:
@@ -110,9 +111,9 @@ class PanGenomeIndexer:
                 else:
                     included = ["/features/[*]/function",
                                 "/features/[*]/id"]
-                    object_info = ws.get_objects2(
-                                {'objects': [{'ref': orthologs_obj[2],
-                                              'included': included}]})['data'][0]['data']
+                    object_info = ws.get_objects2({'objects': 
+                                                  [{'ref': orthologs_obj[2],
+                                                   'included': included}]})['data'][0]['data']
 
                     map(lambda feature: genome_feature_function_map.update(
                                     {feature.get('id'): feature.get('function')}),
