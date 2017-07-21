@@ -1,13 +1,15 @@
 
 from Workspace.WorkspaceClient import Workspace as Workspace
+import gc
 
 
 class PanGenomeViewer:
 
     def _process_pangenome(self):
 
-        object_info = self.ws.get_objects2(
-                                {'objects': [{'ref': self.pangenome_ref}]})['data'][0]['data']
+        object_info = self.ws.get_objects2({'objects': 
+                                            [{'ref': 
+                                             self.pangenome_ref}]})['data'][0]['data']
 
         self.pangenome_id = object_info.get('id')
 
@@ -48,8 +50,8 @@ class PanGenomeViewer:
         for genome_ref in genome_refs:
             genome_gene_map = {}
             ortholog_ids = []
-            object_info = self.ws.get_objects2(
-                                {'objects': [{'ref': genome_ref}]})['data'][0]['data']
+            object_info = self.ws.get_objects2({'objects': 
+                                               [{'ref': genome_ref}]})['data'][0]['data']
 
             scientific_name = object_info.get('scientific_name')
             if scientific_name:
@@ -143,6 +145,20 @@ class PanGenomeViewer:
 
         return result
 
+    def _run_garbage_collection(self):
+        del self.genome_ref_name_map
+        del self.genome_ortholog_map
+        del self.ortholog_gene_map
+        del self.gene_ortholog_map
+        del self.gene_genome_map
+
+        del self.gene_map
+        del self.family_map
+        del self.genome_map
+        del self.shared_family_map
+
+        gc.collect()
+
     def __init__(self, pangenome_ref, token, ws_url):
         self.pangenome_ref = pangenome_ref
         self.token = token
@@ -165,5 +181,7 @@ class PanGenomeViewer:
         self._process_genomes(self.genome_refs)
 
         ret = self._compute_result_map()
+
+        self._run_garbage_collection()
 
         return ret
