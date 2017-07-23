@@ -159,11 +159,7 @@ class PanGenomeViewer:
 
         gc.collect()
 
-    def __init__(self, pangenome_ref, token, ws_url):
-        self.pangenome_ref = pangenome_ref
-        self.token = token
-        self.ws_url = ws_url
-        self.ws = Workspace(self.ws_url, token=self.token)
+    def _build_class_var(self):
         self.genome_ref_name_map = {}
         self.genome_ortholog_map = {}
         self.ortholog_gene_map = {}
@@ -175,7 +171,15 @@ class PanGenomeViewer:
         self.genome_map = {}
         self.shared_family_map = {}
 
+    def __init__(self, pangenome_ref, token, ws_url):
+        self.pangenome_ref = pangenome_ref
+        self.token = token
+        self.ws_url = ws_url
+        self.ws = Workspace(self.ws_url, token=self.token)
+
     def compute_summary(self):
+
+        self._build_class_var()
 
         self._process_pangenome()
         self._process_genomes(self.genome_refs)
