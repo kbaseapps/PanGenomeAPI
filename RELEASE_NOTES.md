@@ -16,4 +16,7 @@ Fix unmatched shared_family_map
 1.0.7:
 Append gene function to ortholog search result
 
+1.0.8:
+Fix memory issue and add parallel for genome processing
+
 
