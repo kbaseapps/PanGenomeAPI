@@ -2,7 +2,7 @@
 from Workspace.WorkspaceClient import Workspace as Workspace
 from pathos.multiprocessing import ProcessingPool as Pool
 import multiprocessing
-
+from random import randint
 
 class PanGenomeViewer:
 
@@ -155,6 +155,15 @@ class PanGenomeViewer:
             genome_map.update({genome_ref: genome_gene_map})
             genome_ortholog_map.update({genome_ref: len(set(ortholog_ids))})
 
+        # append suffix to genome with same name
+        genome_names = []
+        for genome_ref, genome_name in genome_ref_name_map.items():
+            if genome_name in genome_names:
+                append_msg = ' PanGenomeAPI append suffix - ' + str(randint(1, 100))
+                genome_ref_name_map[genome_ref] = genome_name + append_msg
+            else:
+                genome_names.append(genome_name)
+
         return (genome_ref_name_map, gene_genome_map, genome_map, genome_ortholog_map)
 
     def _compute_result_map(self, pangenome_id, genome_map, gene_map, family_map,
@@ -190,7 +199,7 @@ class PanGenomeViewer:
 
         # Genomes
         result.update({'genomes': {}})
-        for genome_ref, genome_value in genome_map.items():
+        for genome_ref, genome_value in genome_map.iteritems():
             genome_genes = len(genome_value)
             if genome_value:
                 genome_homolog_family_genes = sum(genome_value.values())
@@ -205,20 +214,23 @@ class PanGenomeViewer:
                         }})
 
         #  Shared homolog familes
-        for ortholog_id, gene_ids in ortholog_gene_map.items():
+        for ortholog_id, gene_ids in ortholog_gene_map.iteritems():
             shared_family_genome_refs = []
             for gene_id in list(set(gene_ids)):
                 shared_family_genome_refs.append(gene_genome_map.get(gene_id))
+                shared_family_genome_refs = [i for i in shared_family_genome_refs if i is not None]
             shared_family_map = self._process_shared_family_map(list(set(shared_family_genome_refs)), 
                                                                 shared_family_map)
 
-        for genome_ref, genome_family_map in shared_family_map.items():
-            genome_family_map[genome_ref] = result['genomes'][genome_ref_name_map.get(
-                                                            genome_ref)]['genome_homolog_family']
-            for genome_ref, genome_name in genome_ref_name_map.items():
-                genome_family_map[genome_ref_name_map.get(genome_ref)] = genome_family_map.pop(genome_ref)
+        for genome_ref, genome_family_map in shared_family_map.iteritems():
+            genome_name = genome_ref_name_map.get(genome_ref)
+            genome_family_map[genome_ref] = result['genomes'][genome_name]['genome_homolog_family']
 
-        for genome_ref, genome_name in genome_ref_name_map.items():
+            for genome_ref, genome_name in genome_ref_name_map.iteritems():
+                if genome_ref in genome_family_map:
+                    genome_family_map[genome_name] = genome_family_map.pop(genome_ref)
+
+        for genome_ref, genome_name in genome_ref_name_map.iteritems():
             shared_family_map[genome_name] = shared_family_map.pop(genome_ref)
 
         result.update({'shared_family_map': shared_family_map})
