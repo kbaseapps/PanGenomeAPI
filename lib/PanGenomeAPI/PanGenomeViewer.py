@@ -80,7 +80,7 @@ class PanGenomeViewer:
 
         feature_array = []
         for feature in features:
-            if feature.get('type') == 'CDS':
+            if feature.get('type') in ['CDS', 'gene']:
                 gene_id = feature.get('id')
                 feature_array.append(gene_id)
                 if gene_map.get(gene_id):
