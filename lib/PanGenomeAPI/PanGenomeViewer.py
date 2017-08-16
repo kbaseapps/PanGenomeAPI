@@ -77,18 +77,21 @@ class PanGenomeViewer:
             genome_ref_name_map.update({genome_ref: object_info.get('id')})
 
         features = object_info.get('features')
+        features += object_info.get('cdss', [])
+
+        # gene_ids = list(set(map(lambda feature: feature.get('id'), 
+        #                         features)))
 
         feature_array = []
         for feature in features:
-            if feature.get('type') in ['CDS', 'gene']:
-                gene_id = feature.get('id')
-                feature_array.append(gene_id)
-                if gene_map.get(gene_id):
-                    genome_gene_map.update({gene_id: gene_map.get(gene_id)})
-                    ortholog_ids.append(gene_ortholog_map.get(gene_id))
-                    gene_genome_map.update({gene_id: genome_ref})
-                else:
-                    genome_gene_map.update({gene_id: False})
+            gene_id = feature.get('id')
+            feature_array.append(gene_id)
+            if gene_map.get(gene_id):
+                genome_gene_map.update({gene_id: gene_map.get(gene_id)})
+                ortholog_ids.append(gene_ortholog_map.get(gene_id))
+                gene_genome_map.update({gene_id: genome_ref})
+            else:
+                genome_gene_map.update({gene_id: False})
 
         returnVal = {'gene_genome_map': gene_genome_map,
                      'genome_ref_name_map': genome_ref_name_map,
@@ -108,7 +111,7 @@ class PanGenomeViewer:
         arg_2 = [gene_map] * len(genome_refs)
         arg_3 = [gene_ortholog_map] * len(genome_refs)
 
-        cpus = min(4, multiprocessing.cpu_count())
+        cpus = min(8, multiprocessing.cpu_count())
         pool = Pool(ncpus=cpus)
         process_genome_returns = pool.map(self._process_genome, 
                                           genome_refs, arg_2, arg_3)
@@ -120,40 +123,6 @@ class PanGenomeViewer:
                                process_genome_return['genome_gene_map']})
             genome_ortholog_map.update({process_genome_return['genome_ref']: 
                                         process_genome_return['len_ortholog_ids']})
-
-        # genome_ref_name_map = {}
-        # gene_genome_map = {}
-        # genome_map = {} 
-        # genome_ortholog_map = {}
-
-        # for genome_ref in genome_refs:
-        #     genome_gene_map = {}
-        #     ortholog_ids = []
-        #     object_info = self.ws.get_objects2({'objects': 
-        #                                        [{'ref': genome_ref}]})['data'][0]['data']
-
-        #     scientific_name = object_info.get('scientific_name')
-        #     if scientific_name:
-        #         genome_ref_name_map.update({genome_ref: scientific_name})
-        #     else:
-        #         genome_ref_name_map.update({genome_ref: object_info.get('id')})
-
-        #     features = object_info.get('features')
-
-        #     feature_array = []
-        #     for feature in features:
-        #         if feature.get('type') == 'CDS':
-        #             gene_id = feature.get('id')
-        #             feature_array.append(gene_id)
-        #             if gene_map.get(gene_id):
-        #                 genome_gene_map.update({gene_id: gene_map.get(gene_id)})
-        #                 ortholog_ids.append(gene_ortholog_map.get(gene_id))
-        #                 gene_genome_map.update({gene_id: genome_ref})
-        #             else:
-        #                 genome_gene_map.update({gene_id: False})
-
-        #     genome_map.update({genome_ref: genome_gene_map})
-        #     genome_ortholog_map.update({genome_ref: len(set(ortholog_ids))})
 
         # append suffix to genome with same name
         genome_names = []
