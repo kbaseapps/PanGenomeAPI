@@ -124,14 +124,17 @@ class PanGenomeViewer:
             genome_ortholog_map.update({process_genome_return['genome_ref']: 
                                         process_genome_return['len_ortholog_ids']})
 
-        # append suffix to genome with same name
-        genome_names = []
+        # append object ref as suffix to genome with same name
+        genome_names = {}
         for genome_ref, genome_name in genome_ref_name_map.items():
             if genome_name in genome_names:
-                append_msg = ' PanGenomeAPI append suffix - ' + str(randint(1, 100))
-                genome_ref_name_map[genome_ref] = genome_name + append_msg
+                other_ref = genome_names[genome_name]
+                genome_ref_name_map[other_ref] = "{} ({})".format(genome_name,
+                                                                   other_ref)
+                genome_ref_name_map[genome_ref] = "{} ({})".format(genome_name,
+                                                                   genome_ref)
             else:
-                genome_names.append(genome_name)
+                genome_names[genome_name] = genome_ref
 
         return (genome_ref_name_map, gene_genome_map, genome_map, genome_ortholog_map)
 

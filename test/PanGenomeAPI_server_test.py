@@ -17,6 +17,7 @@ from pprint import pprint  # noqa: F401
 from Bio import SeqIO
 
 from biokbase.workspace.client import Workspace as workspaceService
+from GenomeAnnotationAPI.GenomeAnnotationAPIClient import GenomeAnnotationAPI
 from PanGenomeAPI.PanGenomeAPIImpl import PanGenomeAPI
 from PanGenomeAPI.PanGenomeAPIServer import MethodContext
 from PanGenomeAPI.authclient import KBaseAuth as _KBaseAuth
@@ -61,6 +62,7 @@ class PanGenomeAPITest(unittest.TestCase):
         wsName = "test_pangenome_api_" + str(suffix)
         cls.ws_info = cls.wsClient.create_workspace({'workspace': wsName})
         cls.gcs = GenomeComparisonSDK(cls.callback_url)
+        cls.gaa = GenomeAnnotationAPI(cls.callback_url)
         cls.prepare_data()
 
     @classmethod
@@ -93,7 +95,7 @@ class PanGenomeAPITest(unittest.TestCase):
                 sequence = str(record.seq)
                 descr = record.description
                 if len(sequence) <= 100:
-                    features.append({"id": id, "location": [["1", 0, "+", 0]],
+                    features.append({"id": id, "location": [["bkjg", 1, "+", 10]],
                                      "type": "CDS", "protein_translation": sequence,
                                      "aliases": [], "annotations": [], "function": descr})
             genome_obj = {"complete": 0, "contig_ids": ["1"], "contig_lengths": [10],
@@ -104,10 +106,9 @@ class PanGenomeAPITest(unittest.TestCase):
                           "source": "test folder", "source_id": "noid",
                           "features": features}
             genome_obj_name = "genome." + str(genome_index)
-            info = cls.wsClient.save_objects({'workspace': cls.ws_info[1],
-                                              'objects': [{'type': 'KBaseGenomes.Genome',
-                                                           'name': genome_obj_name,
-                                                           'data': genome_obj}]})[0]
+            info = cls.gaa.save_one_genome_v1({'workspace': cls.ws_info[1],
+                                               'name': genome_obj_name,
+                                               'data': genome_obj})['info']
             full_ref = str(info[6]) + "/" + str(info[0]) + "/" + str(info[4])
             genome_feature_counts[full_ref] = len(features)
             genomeset_obj["elements"]["param" + str(genome_index)] = {
