@@ -77,7 +77,6 @@ class PanGenomeViewer:
             genome_ref_name_map.update({genome_ref: object_info.get('id')})
 
         features = object_info.get('features')
-        features += object_info.get('cdss', [])
 
         # gene_ids = list(set(map(lambda feature: feature.get('id'), 
         #                         features)))
