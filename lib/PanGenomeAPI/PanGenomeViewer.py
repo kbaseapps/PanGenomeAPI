@@ -67,8 +67,12 @@ class PanGenomeViewer:
 
         genome_gene_map = {}
         ortholog_ids = []
-        object_info = self.ws.get_objects2({'objects': 
-                                           [{'ref': genome_ref}]})['data'][0]['data']
+        try:
+            object_info = self.ws.get_objects2(
+                {'objects': [{'ref': genome_ref}]}
+            )['data'][0]['data']
+        except Exception as e:
+            raise RuntimeError("Error in accessing WS objects: %s" % e)
 
         scientific_name = object_info.get('scientific_name')
         if scientific_name:
