@@ -22,4 +22,9 @@ Fix memory issue and add parallel for genome processing
 1.0.9:
 Fix same genome name issue
 
+1.0.10:
+Compatibility with new genome
+
+1.0.11:
+Fix multiprocessing pickling problem
 
