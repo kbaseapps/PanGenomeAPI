@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
-import unittest
 import os  # noqa: F401
-import json  # noqa: F401
-import time
-import requests  # noqa: F401
 import shutil
-
+import time
+import unittest
 from os import environ
+from pprint import pprint  # noqa: F401
 try:
     from ConfigParser import ConfigParser  # py2
-except:
+except ImportError:
     from configparser import ConfigParser  # py3
-
-from pprint import pprint  # noqa: F401
 
 from Bio import SeqIO
 
