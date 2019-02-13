@@ -12,10 +12,9 @@ from __future__ import print_function
 try:
     # baseclient and this client are in a package
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
-except:
+except ImportError:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
-import time
 
 
 class GenomeComparisonSDK(object):
@@ -24,7 +23,7 @@ class GenomeComparisonSDK(object):
             self, url=None, timeout=30 * 60, user_id=None,
             password=None, token=None, ignore_authrc=False,
             trust_all_ssl_certificates=False,
-            auth_svc='https://kbase.us/services/authorization/Sessions/Login',
+            auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login',
             service_ver='release',
             async_job_check_time_ms=100, async_job_check_time_scale_percent=150, 
             async_job_check_max_time_ms=300000):
@@ -40,14 +39,6 @@ class GenomeComparisonSDK(object):
             async_job_check_time_scale_percent=async_job_check_time_scale_percent,
             async_job_check_max_time_ms=async_job_check_max_time_ms)
 
-    def _check_job(self, job_id):
-        return self._client._check_job('GenomeComparisonSDK', job_id)
-
-    def _build_pangenome_submit(self, input, context=None):
-        return self._client._submit_job(
-             'GenomeComparisonSDK.build_pangenome', [input],
-             self._service_ver, context)
-
     def build_pangenome(self, input, context=None):
         """
         :param input: instance of type "BuildPangenomeParams" -> structure:
@@ -58,22 +49,8 @@ class GenomeComparisonSDK(object):
            parameter "report_name" of String, parameter "report_ref" of
            String, parameter "pg_ref" of String
         """
-        job_id = self._build_pangenome_submit(input, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _compare_genomes_submit(self, params, context=None):
-        return self._client._submit_job(
-             'GenomeComparisonSDK.compare_genomes', [params],
-             self._service_ver, context)
+        return self._client.run_job('GenomeComparisonSDK.build_pangenome',
+                                    [input], self._service_ver, context)
 
     def compare_genomes(self, params, context=None):
         """
@@ -86,28 +63,9 @@ class GenomeComparisonSDK(object):
            parameter "report_name" of String, parameter "report_ref" of
            String, parameter "cg_ref" of String
         """
-        job_id = self._compare_genomes_submit(params, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
+        return self._client.run_job('GenomeComparisonSDK.compare_genomes',
+                                    [params], self._service_ver, context)
 
     def status(self, context=None):
-        job_id = self._client._submit_job('GenomeComparisonSDK.status', 
-            [], self._service_ver, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
+        return self._client.run_job('GenomeComparisonSDK.status',
+                                    [], self._service_ver, context)

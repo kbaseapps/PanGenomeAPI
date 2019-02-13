@@ -2,10 +2,9 @@ import os
 import time
 import tempfile
 import subprocess
-import string
 import traceback
 
-from Workspace.WorkspaceClient import Workspace as Workspace
+from installed_clients.WorkspaceClient import Workspace as Workspace
 from PanGenomeAPI.CombinedLineIterator import CombinedLineIterator
 
 
@@ -28,9 +27,9 @@ class TableIndexer:
         if limit is None:
             limit = 50
         if debug:
-            print("Search: Object =" + ref + ", query=[" + query + "], sort-by=[" +
-                  self.get_sorting_code(self.object_column_props_map, sort_by) +
-                  "], start=" + str(start) + ", limit=" + str(limit))
+            print(f"Search: Object ={ref}, query=[{query}], sort-by=["
+                  f"{self.get_sorting_code(self.object_column_props_map, sort_by)}], "
+                  f"start={start}, limit={limit}")
             t1 = time.time()
 
         inner_chsum = self.check_object_cache(ref, search_object, info_included,
@@ -83,13 +82,13 @@ class TableIndexer:
         with outfile:
             for search_object_info in search_object_infos:
 
-                line = u""
+                line = ""
 
                 for info in info_included:
                     object_info = self.to_text(search_object_info, info)
                     line += object_info + "\t"
 
-                line = line[:-1] + u"\n"
+                line = line[:-1] + "\n"
                 outfile.write(line.encode("utf-8"))
 
         subprocess.Popen(["gzip", outfile.name],
@@ -170,8 +169,8 @@ class TableIndexer:
 
     def get_column_props(self, column_props_map, col_name):
         if col_name not in column_props_map:
-            raise ValueError("Unknown column name '" + col_name + "', " +
-                             "please use one of " + str(column_props_map.keys()))
+            raise ValueError(f"Unknown column name '{col_name}', "
+                             f"please use one of {list(column_props_map.keys())}")
         return column_props_map[col_name]
 
     def build_object_column_props_map(self, info_included):
@@ -189,7 +188,7 @@ class TableIndexer:
 
     def filter_obejct_query(self, query, index_iter, search_object, info_included,
                             limit, start, num_found, debug):
-        query_words = str(query).lower().translate(string.maketrans("\r\n\t,", "    ")).split()
+        query_words = str(query).lower().translate(str.maketrans("\r\n\t,", "    ")).split()
         if debug:
             print("    Filtering...")
             t1 = time.time()
@@ -208,7 +207,7 @@ class TableIndexer:
         if debug:
             print("    (time=" + str(time.time() - t1) + ")")
         return {"num_found": fcount, "start": start,
-                "{}".format(search_object): objects,
+                f"{search_object}": objects,
                 "query": query}
 
     def unpack_objects(self, line, info_included, items=None):
@@ -227,5 +226,5 @@ class TableIndexer:
 
             return search_object_info
         except:
-            raise ValueError("Error parsing bin from: [" + line + "]\n" +
+            raise ValueError(f"Error parsing bin from: [{line}]\n"
                              "Cause: " + traceback.format_exc())
