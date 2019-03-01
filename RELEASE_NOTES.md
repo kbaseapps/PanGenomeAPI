@@ -28,3 +28,5 @@ Compatibility with new genome
 1.0.11:
 Fix multiprocessing pickling problem
 
+1.1.0:
+Update to Python 3

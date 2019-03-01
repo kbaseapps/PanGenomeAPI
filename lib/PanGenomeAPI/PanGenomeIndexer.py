@@ -3,7 +3,7 @@ import os
 
 from PanGenomeAPI.TableIndexer import TableIndexer
 from PanGenomeAPI.PanGenomeViewer import PanGenomeViewer
-from Workspace.WorkspaceClient import Workspace as Workspace
+from installed_clients.WorkspaceClient import Workspace as Workspace
 
 
 class PanGenomeIndexer:
@@ -115,9 +115,9 @@ class PanGenomeIndexer:
                                                   [{'ref': orthologs_obj[2],
                                                    'included': included}]})['data'][0]['data']
 
-                    map(lambda feature: genome_feature_function_map.update(
-                                    {feature.get('id'): feature.get('function')}),
-                        object_info['features'])
+                    for feature in object_info['features']:
+                        genome_feature_function_map.update(
+                            {feature.get('id'): feature.get('function')})
 
                     orthologs_obj.append(genome_feature_function_map.get(gene_id))
 

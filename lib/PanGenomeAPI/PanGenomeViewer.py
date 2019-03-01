@@ -1,8 +1,9 @@
-
-from Workspace.WorkspaceClient import Workspace as Workspace
-from pathos.multiprocessing import ProcessingPool as Pool
 import multiprocessing
-from random import randint
+
+from pathos.multiprocessing import ProcessingPool as Pool
+
+from installed_clients.WorkspaceClient import Workspace as Workspace
+
 
 class PanGenomeViewer:
 
@@ -42,9 +43,8 @@ class PanGenomeViewer:
                 gene_ortholog_map, ortholog_gene_map, shared_family_map)
 
     def _init_shared_family_map(self, genome_refs):
-        init_map = {}
+        init_map = {genome_ref: 0 for genome_ref in genome_refs}
         shared_family_map = {}
-        map(lambda genome_ref: init_map.update({genome_ref: 0}), genome_refs)
         for genome_ref in genome_refs:
             shared_family_map.update({genome_ref: init_map})
 
@@ -139,7 +139,7 @@ class PanGenomeViewer:
             else:
                 genome_names[genome_name] = genome_ref
 
-        return (genome_ref_name_map, gene_genome_map, genome_map, genome_ortholog_map)
+        return genome_ref_name_map, gene_genome_map, genome_map, genome_ortholog_map
 
     def _compute_result_map(self, pangenome_id, genome_map, gene_map, family_map,
                             genome_ortholog_map, genome_ref_name_map, ortholog_gene_map,
@@ -174,7 +174,7 @@ class PanGenomeViewer:
 
         # Genomes
         result.update({'genomes': {}})
-        for genome_ref, genome_value in genome_map.iteritems():
+        for genome_ref, genome_value in genome_map.items():
             genome_genes = len(genome_value)
             if genome_value:
                 genome_homolog_family_genes = sum(genome_value.values())
@@ -189,7 +189,7 @@ class PanGenomeViewer:
                         }})
 
         #  Shared homolog familes
-        for ortholog_id, gene_ids in ortholog_gene_map.iteritems():
+        for ortholog_id, gene_ids in ortholog_gene_map.items():
             shared_family_genome_refs = []
             for gene_id in list(set(gene_ids)):
                 shared_family_genome_refs.append(gene_genome_map.get(gene_id))
@@ -197,15 +197,15 @@ class PanGenomeViewer:
             shared_family_map = self._process_shared_family_map(list(set(shared_family_genome_refs)), 
                                                                 shared_family_map)
 
-        for genome_ref, genome_family_map in shared_family_map.iteritems():
+        for genome_ref, genome_family_map in shared_family_map.items():
             genome_name = genome_ref_name_map.get(genome_ref)
             genome_family_map[genome_ref] = result['genomes'][genome_name]['genome_homolog_family']
 
-            for genome_ref, genome_name in genome_ref_name_map.iteritems():
+            for genome_ref, genome_name in genome_ref_name_map.items():
                 if genome_ref in genome_family_map:
                     genome_family_map[genome_name] = genome_family_map.pop(genome_ref)
 
-        for genome_ref, genome_name in genome_ref_name_map.iteritems():
+        for genome_ref, genome_name in genome_ref_name_map.items():
             shared_family_map[genome_name] = shared_family_map.pop(genome_ref)
 
         result.update({'shared_family_map': shared_family_map})
