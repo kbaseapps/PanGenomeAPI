@@ -30,3 +30,6 @@ Fix multiprocessing pickling problem
 
 1.1.0:
 Update to Python 3
+
+1.1.1:
+Update server to support longer running tasks with longer timeouts.
