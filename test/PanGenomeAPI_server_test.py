@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os  # noqa: F401
+import json
 import shutil
 import time
 import unittest
@@ -15,6 +16,8 @@ from PanGenomeAPI.authclient import KBaseAuth as _KBaseAuth
 from installed_clients.GenomeAnnotationAPIClient import GenomeAnnotationAPI
 from installed_clients.GenomeComparisonSDKClient import GenomeComparisonSDK
 from installed_clients.WorkspaceClient import Workspace as workspaceService
+
+_TEST_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class PanGenomeAPITest(unittest.TestCase):
@@ -80,8 +83,7 @@ class PanGenomeAPITest(unittest.TestCase):
         cls.genome_refs = []
         genome_feature_counts = {}
         for genome_index, genome_file_name in enumerate(genome_fasta_files):
-            test_dir = os.path.dirname(os.path.realpath(__file__))
-            file_path = test_dir + "/data/" + genome_file_name
+            file_path = os.path.join(_TEST_DIR, "data", genome_file_name)
             features = []
             for record in SeqIO.parse(file_path, "fasta"):
                 id = record.id
@@ -493,3 +495,14 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('features', ret['genomes'][0])
         self.assertIn('families', ret['genomes'][0])
         self.assertIn('functions', ret['genomes'][0])
+
+    def test_compute_summary_from_pangenome2_valid(self):
+        # Test object lives in a dedicated public test narrative owned by user `kbasedata`
+        ref = "51489/10/1"
+        params = {"pangenome_ref": ref}
+        ret = self.getImpl().compute_summary_from_pangenome2(self.getContext(), params)[0]
+        path = os.path.join(_TEST_DIR, "data", "summary2_expected_result.json")
+        # Assert against a full example object found in test/data/summary2_expected_result.json
+        with open(path) as fd:
+            expected = json.load(fd)
+        self.assertEqual(ret, expected)
