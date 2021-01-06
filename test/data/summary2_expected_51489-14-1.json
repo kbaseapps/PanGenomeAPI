@@ -1,0 +1,42 @@
+{
+    "pangenome_id": "pangenome_diff",
+    "genomes_count": 2,
+    "genes": {
+        "genes_count": 8494,
+        "homolog_family_genes_count": 4323,
+        "singleton_family_genes_count": 4171
+    },
+    "families": {
+        "families_count": 5915,
+        "homolog_families_count": 1744,
+        "singleton_families_count": 4171
+    },
+    "genomes": {
+        "Rhodobacter sphaeroides 2.4.1": {
+            "genome_genes": 4474,
+            "genome_homolog_family_genes": 2181,
+            "genome_homolog_family": 1511,
+            "genome_singleton_family_genes": 2293
+        },
+        "Shewanella oneidensis MR-1": {
+            "genome_genes": 4587,
+            "genome_homolog_family_genes": 2142,
+            "genome_homolog_family": 1470,
+            "genome_singleton_family_genes": 2445
+        }
+    },
+    "shared_family_map": {
+        "Rhodobacter sphaeroides 2.4.1": {
+            "Rhodobacter sphaeroides 2.4.1": 1511,
+            "Shewanella oneidensis MR-1": 1237
+        },
+        "Shewanella oneidensis MR-1": {
+            "Rhodobacter sphaeroides 2.4.1": 1237,
+            "Shewanella oneidensis MR-1": 1470
+        }
+    },
+    "genome_ref_name_map": {
+        "51489/13/1": "Rhodobacter sphaeroides 2.4.1",
+        "51489/9/1": "Shewanella oneidensis MR-1"
+    }
+}

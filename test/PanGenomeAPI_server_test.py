@@ -497,12 +497,21 @@ class PanGenomeAPITest(unittest.TestCase):
         self.assertIn('functions', ret['genomes'][0])
 
     def test_compute_summary_from_pangenome2_valid(self):
-        # Test object lives in a dedicated public test narrative owned by user `kbasedata`
-        ref = "51489/10/1"
-        params = {"pangenome_ref": ref}
-        ret = self.getImpl().compute_summary_from_pangenome2(self.getContext(), params)[0]
-        path = os.path.join(_TEST_DIR, "data", "summary2_expected_result.json")
-        # Assert against a full example object found in test/data/summary2_expected_result.json
-        with open(path) as fd:
-            expected = json.load(fd)
-        self.assertEqual(ret, expected)
+        # Test objects live in a dedicated public test narrative owned by user `kbasedata`
+        refs = ("51489/10/1", "51489/14/1", "51489/15/1")
+        for ref in refs:
+            params = {"pangenome_ref": ref}
+            ret = self.getImpl().compute_summary_from_pangenome2(self.getContext(), params)[0]
+            filename = f"summary2_expected_{ref.replace('/', '-')}.json"
+            path = os.path.join(_TEST_DIR, "data", filename)
+            # Assert against a full example object found in test/data/summary2_expected_result.json
+            with open(path) as fd:
+                expected = json.load(fd)
+            self.assertEqual(ret, expected)
+
+    def test_compute_summary_from_pangenome2_invalid_aprams(self):
+        params = ({"pangenome_ref": 0}, None, {"xyz": 123})
+        ctx = self.getContext()
+        for param in params:
+            with self.assertRaises(Exception):
+                self.getImpl().compute_summary_from_pangenome2(ctx, param)
