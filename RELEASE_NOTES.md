@@ -33,3 +33,6 @@ Update to Python 3
 
 1.1.1:
 Update server to support longer running tasks with longer timeouts.
+
+1.1.2:
+Removed travis.yml and added github action workflow
