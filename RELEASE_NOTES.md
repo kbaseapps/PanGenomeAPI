@@ -33,3 +33,7 @@ Update to Python 3
 
 1.1.1:
 Update server to support longer running tasks with longer timeouts.
+
+1.2.1:
+Add the function `compute_summary_from_pangenome2` which improves performance
+over the previous function.

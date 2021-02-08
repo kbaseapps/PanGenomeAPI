@@ -358,6 +358,10 @@ class Application(object):
                              name='PanGenomeAPI.compute_summary_from_pangenome',
                              types=[dict])
         self.method_authentication['PanGenomeAPI.compute_summary_from_pangenome'] = 'optional'  # noqa
+        self.rpc_service.add(impl_PanGenomeAPI.compute_summary_from_pangenome2,
+                             name='PanGenomeAPI.compute_summary_from_pangenome2',
+                             types=[dict])
+        self.method_authentication['PanGenomeAPI.compute_summary_from_pangenome2'] = 'optional'  # noqa
         self.rpc_service.add(impl_PanGenomeAPI.status,
                              name='PanGenomeAPI.status',
                              types=[dict])

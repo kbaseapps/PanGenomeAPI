@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
 from PanGenomeAPI.PanGenomeIndexer import PanGenomeIndexer
-import os
+from PanGenomeAPI.fetch_summary.main import fetch_pangenome_summary
 #END_HEADER
 
 
@@ -20,9 +20,9 @@ class PanGenomeAPI:
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.1.0"
-    GIT_URL = "https://github.com/kbaseapps/PanGenomeAPI.git"
-    GIT_COMMIT_HASH = "6aa52d10d28fc46e3762cfc6df34be20ae8deef6"
+    VERSION = "1.2.1"
+    GIT_URL = "https://github.com/kbaseapps/PanGenomeAPI"
+    GIT_COMMIT_HASH = "44d57aa82618e61624cd882e7f3f5ee91ea93b96"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -31,6 +31,7 @@ class PanGenomeAPI:
     # be found
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
+        self.config = config
         self.indexer = PanGenomeIndexer(config)
         #END_CONSTRUCTOR
         pass
@@ -215,6 +216,7 @@ class PanGenomeAPI:
 
     def compute_summary_from_pangenome(self, ctx, params):
         """
+        @deprecated compute_summary_from_pangenome2
         :param params: instance of type "ComputeSummaryFromPG" -> structure:
            parameter "pangenome_ref" of String
         :returns: instance of type "ComputeSummaryFromPGResult" -> structure:
@@ -236,6 +238,77 @@ class PanGenomeAPI:
         # At some point might do deeper type checking...
         if not isinstance(result, dict):
             raise ValueError('Method compute_summary_from_pangenome return value ' +
+                             'result is not type dict as required.')
+        # return the results
+        return [result]
+
+    def compute_summary_from_pangenome2(self, ctx, params):
+        """
+        Compute a summary of the pangenome, with various counts and aggregations.
+        :param params: instance of type "ComputeSummaryFromPG" -> structure:
+           parameter "pangenome_ref" of String
+        :returns: instance of type "Summary2Result" (* Return type for the
+           compute_summary_from_pangenome2 function. * Much of this matches
+           the ComputeSummaryFromPG type, with some corrections. *
+           Properties: *     pangenome_id: string identifier from the
+           Pangenome object (under data/id) *     genomes_count: total
+           genomes included in this pangenome *     genes: counts of total
+           genes, families, and singletons in the pangenome *     families:
+           counts of total families and single families *     genomes:
+           mapping of genome workspace reference to gene/family counts for
+           each *     shared_family_map: *         mapping of genome IDs to
+           other genome IDs, with the nested *         values being the count
+           of shared gene families. For example: *         {"1": {"2": 10}}
+           says that genome "1" and genome "2" have 10 *         shared gene
+           families. *     genome_ref_name_map: *         mapping from genome
+           refs to a unique displayable/readable string *         that
+           includes the scientific and object names for each genome.) ->
+           structure: parameter "pangenome_id" of String, parameter
+           "genomes_count" of Long, parameter "genes" of type
+           "GeneFamilyReport" (* Report of gene counts for a pangenome, or a
+           subset within a pangenome. * Properties: *     genes_count: total
+           number of genes *     homolog_family_genes_count: total number of
+           genes in non-singleton families *    
+           singleton_family_genes_count: total number of genes in families
+           with only one member) -> structure: parameter "genes_count" of
+           Long, parameter "homolog_family_genes_count" of Long, parameter
+           "singleton_family_genes_count" of Long, parameter "families" of
+           type "FamilyReport" (Report of counts for each homolog family * A
+           lot of this is redundant with GeneFamilyReport, but included for
+           backwards compatibility. * Properties: *     families_counts:
+           total count of homolog families *     homolog_families_count:
+           total count of non-singleton families (TODO is this right?) *    
+           singleton_families_count: total count of singleton families) ->
+           structure: parameter "families_count" of Long, parameter
+           "homolog_families_count" of Long, parameter
+           "singleton_families_count" of Long, parameter "genomes" of mapping
+           from String to type "GenomeGeneFamilyReport" (* This is the same
+           as GeneFamilyReport with different keys. This only * exists for
+           frontend compatibility reasons. * Properties: *   genome_genes:
+           total count of genes *   genome_homolog_family_genes: total count
+           of genes in non-singleton families *  
+           genome_singleton_family_genes: total count of genes in singleton
+           families *   genome_homolog_family: total count of homolog
+           families) -> structure: parameter "genome_genes" of Long,
+           parameter "genome_homolog_family_genes" of Long, parameter
+           "genome_singleton_family_genes" of Long, parameter
+           "genome_homolog_family" of Long, parameter "shared_family_map" of
+           mapping from String to mapping from String to Long, parameter
+           "genome_ref_name_map" of mapping from String to String
+        """
+        # ctx is the context object
+        # return variables are: result
+        #BEGIN compute_summary_from_pangenome2
+        result = fetch_pangenome_summary(
+            params["pangenome_ref"],
+            self.config["workspace-url"],
+            ctx["token"],
+        )
+        #END compute_summary_from_pangenome2
+
+        # At some point might do deeper type checking...
+        if not isinstance(result, dict):
+            raise ValueError('Method compute_summary_from_pangenome2 return value ' +
                              'result is not type dict as required.')
         # return the results
         return [result]
