@@ -1,0 +1,42 @@
+{
+    "pangenome_id": "pangenome_otherapp",
+    "genomes_count": 2,
+    "genes": {
+        "genes_count": 7852,
+        "homolog_family_genes_count": 4759,
+        "singleton_family_genes_count": 3093
+    },
+    "families": {
+        "families_count": 5304,
+        "homolog_families_count": 2211,
+        "singleton_families_count": 3093
+    },
+    "genomes": {
+        "Shewanella amazonensis SB2B": {
+            "genome_genes": 3800,
+            "genome_homolog_family_genes": 2286,
+            "genome_homolog_family": 2170,
+            "genome_singleton_family_genes": 1514
+        },
+        "Shewanella oneidensis MR-1": {
+            "genome_genes": 4587,
+            "genome_homolog_family_genes": 2473,
+            "genome_homolog_family": 2195,
+            "genome_singleton_family_genes": 2114
+        }
+    },
+    "shared_family_map": {
+        "Shewanella amazonensis SB2B": {
+            "Shewanella amazonensis SB2B": 2170,
+            "Shewanella oneidensis MR-1": 2154
+        },
+        "Shewanella oneidensis MR-1": {
+            "Shewanella amazonensis SB2B": 2154,
+            "Shewanella oneidensis MR-1": 2195
+        }
+    },
+    "genome_ref_name_map": {
+        "51489/8/1": "Shewanella amazonensis SB2B",
+        "51489/9/1": "Shewanella oneidensis MR-1"
+    }
+}
