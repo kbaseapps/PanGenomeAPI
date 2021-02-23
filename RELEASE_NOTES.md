@@ -34,10 +34,10 @@ Update to Python 3
 1.1.1:
 Update server to support longer running tasks with longer timeouts.
 
-1.1.2:
-Removed travis.yml and added github action workflow
-
 1.2.1:
 Add the function `compute_summary_from_pangenome2` which improves performance
 over the previous function.
+
+1.2.2:
+Removed travis.yml and added github action workflow
 
